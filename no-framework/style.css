@@ -21,6 +21,22 @@ body {
     padding: 20px;
 }
 
+
+/* Button styling */
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 20px 30px;
+    cursor: pointer;
+    border-radius: 0px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
 /* Header styling */
 header {
     background: #333;
@@ -52,9 +68,37 @@ main {
 
 /* Footer styling */
 footer {
-    background: #333;
+    background: #000;
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    margin-top: 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* About me button */
+#aboutMeBtn {
+    position: top;
+    float: left;
+    text-align: center;
+}
+
+#aboutMeSection{
+    position: down;
+    float: left;
+    display: none;
+}
+
+/* project button */
+#projectsBtn {
+    position: top;
+    float: right;
+    text-align: center;
+}
+
+#projectsSection{
+    position: down;
+    float: right;
+    display: none;
 }

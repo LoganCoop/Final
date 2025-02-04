@@ -12,16 +12,44 @@
     </header>
     <main>
         <section>
-            <h2>About Me</h2>
-            <p>This is a section about me.</p>
+            <button id="aboutMeBtn">About Me</button>
+            <div id="aboutMeSection" style="display: none;">
+                <h2>About Me</h2>
+                <p>Hello! I'm Logan Cooper I am a new web developer </p>
+            </div>
+
+            <script>
+                document.getElementById('aboutMeBtn').addEventListener('click', function() {
+                    var aboutMeSection = document.getElementById('aboutMeSection');
+                    if (aboutMeSection.style.display === 'none') {
+                        aboutMeSection.style.display = 'block';
+                    } else {
+                        aboutMeSection.style.display = 'none';
+                    }
+                });
+            </script>
         </section>
-        <section>
-            <h2>Projects</h2>
-            <p>This is a section about my projects.</p>
+        <section style="float: right; width: 45%;"></section>
+            <button id="projectsBtn">Projects</button>
+            <div id="projectsSection" style="display: none;">
+                <h2>Projects</h2>
+                <p>Here are some of my projects...</p>
+            </div>
+
+            <script>
+                document.getElementById('projectsBtn').addEventListener('click', function() {
+                    var projectsSection = document.getElementById('projectsSection');
+                    if (projectsSection.style.display === 'none') {
+                        projectsSection.style.display = 'block';
+                    } else {
+                        projectsSection.style.display = 'none';
+                    }
+                });
+            </script>
         </section>
     </main>
     <footer>
-        <p>&copy; 2023 My Web Page</p>
+        <p>&copy; 2025 My Web Page</p>
     </footer>
 </body>
 </html>
