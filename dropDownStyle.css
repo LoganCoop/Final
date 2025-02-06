@@ -26,17 +26,17 @@ header {
 /* File dropdown button at top left */
 .file-dropdown {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 34.5px;
+    left: 0px;
 }
 
 /* File dropdown button */
 .file-dropdown button {
-    background-color: #ffcccb; /* Pastel pink */
+    background-color: #f9a91e; /* Pastel pink */
     color: #333;
-    padding: 10px 20px;
+    padding: 10px 67px;
     border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -48,32 +48,36 @@ header {
     background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 5px;
+    border-radius: 0px;
     z-index: 1;
 }
 
 /* File dropdown items */
 .file-dropdown-content a {
+    font-size: medium;
     color: #333;
-    padding: 6px 18px;
+    padding: 3px 8px;
     text-decoration: none;
     display: block;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid #fffdfd;
 }
 
 /* File dropdown items hover */
 .file-dropdown-content a:hover {
-    background-color: #e6e6fa; /* Pastel lavender */
+    background-color: #dcff7b; /* Pastel lavender */
 }
 
 /* Show file dropdown on hover */
 .file-dropdown:hover .file-dropdown-content {
     display: block;
+    position: absolute;
+    top: 72px;
+    left: 0px;
 }
 
 /* Change file button color on hover */
 .file-dropdown:hover button {
-    background-color: #ffb6c1; /* Light pastel pink */
+    background-color: #8e8e8e; /* Light pastel pink */
 }
 
 
@@ -84,17 +88,17 @@ header {
 /* File dropdown button at top left */
 .edit-dropdown {
     position: absolute;
-    top: 20px;
-    left: 60px;
+    top: 34.5px;
+    left: 80px;
 }
 
 /* File dropdown button */
 .edit-dropdown button {
-    background-color: #ffcccb; /* Pastel pink */
+    background-color: #f9a91e; /* Pastel pink */
     color: #333;
-    padding: 10px 20px;
+    padding: 10px 67px;
     border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -106,32 +110,36 @@ header {
     background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 5px;
+    border-radius: 0px;
     z-index: 1;
 }
 
 /* File dropdown items */
 .edit-dropdown-content a {
+    font-size: medium;
     color: #333;
-    padding: 6px 18px;
+    padding: 3px 8px;
     text-decoration: none;
     display: block;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid #fffdfd;
 }
 
 /* File dropdown items hover */
 .edit-dropdown-content a:hover {
-    background-color: #e6e6fa; /* Pastel lavender */
+    background-color: #7979f5; /* Pastel lavender */
 }
 
 /* Show file dropdown on hover */
 .edit-dropdown:hover .edit-dropdown-content {
     display: block;
+    position: absolute;
+    top: 72px;
+    left: 80px;
 }
 
 /* Change file button color on hover */
 .edit-dropdown:hover button {
-    background-color: #ffb6c1; /* Light pastel pink */
+    background-color: #6f6d69; /* Light pastel pink */
 }
 
 
@@ -139,20 +147,21 @@ header {
 /* File dropdown button at top left */
 .view-dropdown {
     position: absolute;
-    top: 20px;
-    left: 100px;
+    top: 34.5px;
+    left: 160px;
 }
 
 /* File dropdown button */
 .view-dropdown button {
-    background-color: #ffcccb; /* Pastel pink */
+    background-color: #f9a91e; /* Pastel pink */
     color: #333;
-    padding: 10px 20px;
+    padding: 10px 67px;
     border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     font-size: 16px;
 }
+
 
 /* File dropdown content */
 .view-dropdown-content {
@@ -161,30 +170,34 @@ header {
     background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 5px;
+    border-radius: 0px;
     z-index: 1;
 }
 
 /* File dropdown items */
 .view-dropdown-content a {
+    font-size: medium;
     color: #333;
-    padding: 6px 18px;
+    padding: 3px 8px;
     text-decoration: none;
     display: block;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid #fffdfd;
 }
 
 /* File dropdown items hover */
 .view-dropdown-content a:hover {
-    background-color: #e6e6fa; /* Pastel lavender */
+    background-color: #ff8be4; /* Pastel lavender */
 }
 
 /* Show file dropdown on hover */
 .view-dropdown:hover .view-dropdown-content {
     display: block;
+    position: absolute;
+    top: 72px;
+    left: 160px;
 }
 
 /* Change file button color on hover */
 .view-dropdown:hover button {
-    background-color: #ffb6c1; /* Light pastel pink */
+    background-color: #5f5e5e; /* Light pastel pink */
 }
