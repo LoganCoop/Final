@@ -79,26 +79,26 @@ footer {
 
 /* About me button */
 #aboutMeBtn {
-    position: top;
-    float: left;
+    top: 20px;
     text-align: center;
 }
 
 #aboutMeSection{
-    position: down;
-    float: left;
+    top: 30px;
+    left: 0px;
     display: none;
+    font-size: small;
+
 }
 
 /* project button */
 #projectsBtn {
-    position: top;
-    float: right;
+    top: 60px;
+    left: 200px;
     text-align: center;
 }
 
 #projectsSection{
-    position: down;
-    float: right;
+    top: 70px;
     display: none;
 }
