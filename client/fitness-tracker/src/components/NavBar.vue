@@ -2,61 +2,120 @@
 import { ref } from 'vue'
 
 const isActive = ref(false)
+
+
+const clearData = (username: string) => {
+    localStorage.removeItem(`${username}Token`);
+    console.log(`Data cleared for ${username}`);
+    window.location.reload();
+}
+
+const logOutUser = (username: string) => {
+    localStorage.removeItem(`${username}Token`);
+    console.log(`${username} logged out`);
+    window.location.reload();
+}
+
 </script>
 
 <template>
-  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
-    <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="">
-          <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="30" />
-        </a>
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="vuejs.org">
+                    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="30" />
+                </a>
 
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          :class="{ 'is-active': isActive }"
-          @click="isActive = !isActive"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div class="navbar-menu" :class="{ 'is-active': isActive }">
-        <div class="navbar-start">
-          <RouterLink to="/" class="navbar-item">Home</RouterLink>
-          <RouterLink to="/products" class="navbar-item">Products</RouterLink>
-          <RouterLink to="/about" class="navbar-item">About</RouterLink>
-          <a class="navbar-item">Documentation</a>
-
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">More</a>
-            <div class="navbar-dropdown">
-              <a class="navbar-item">About</a>
-              <a class="navbar-item is-selected">Jobs</a>
-              <a class="navbar-item">Contact</a>
-              <hr class="navbar-divider" />
-              <a class="navbar-item">Report an issue</a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                   :class="{ 'is-active': isActive }" @click="isActive = !isActive">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-          </div>
-        </div>
 
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-primary"><strong>Sign up</strong></a>
-              <a class="button is-light">Log in</a>
+            <div class="navbar-menu" :class="{ 'is-active': isActive }">
+                <div class="navbar-start">
+                    <RouterLink to="/" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-home"></i>
+                        </span>
+                        <span>Home</span>
+                    </RouterLink>
+                    <RouterLink to="/my-activity" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-running"></i>
+                        </span>
+                        <span>My Activity</span>
+                    </RouterLink>
+                    <RouterLink to="/stats" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </span>
+                        <span>Statistics</span>
+                    </RouterLink>
+                    <RouterLink to="/friend-activity" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-user-friends"></i>
+                        </span>
+                        <span>Friends Activity</span>
+                    </RouterLink>
+                    <RouterLink to="/people-search" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <span>People Search</span>
+                    </RouterLink>
+                    <RouterLink to="/admin" class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-user-shield"></i>
+                        </span>
+                        <span>Admin</span>
+                    </RouterLink>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <RouterLink to="/sign-up" class="button is-primary">
+                                <strong>Sign up</strong>
+                            </RouterLink>
+                            <div class="dropdown is-hoverable">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
+                                        <span>Log in</span>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                    <div class="dropdown-content">
+                                        <RouterLink to="/login" class="dropdown-item">
+                                            Log in
+                                        </RouterLink>
+                                        <a class="dropdown-item" @click="logOutUser('user')">
+                                            <span class="icon">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                            </span>
+                                            <span>Log out</span>
+                                        </a>
+                                        <a class="dropdown-item" @click="clearData('user')">
+                                            <span class="icon">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                            <span>Clear Data</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 </template>
 
 <style scoped></style>

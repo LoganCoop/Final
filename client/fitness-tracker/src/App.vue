@@ -1,34 +1,35 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
-import NotificationList from './components/NotificationList.vue'
-import SlidingDrawer from './components/SlidingDrawer.vue'
-import ShoppingCart from './components/ShoppingCart.vue'
+
 </script>
 
 <template>
   <header>
     <NavBar />
   </header>
-
-  <div class="container body-container">
-    <NotificationList />
-    <RouterView />
-  </div>
-
-  <SlidingDrawer>
-    <ShoppingCart />
-  </SlidingDrawer>
+  <router-view/>
 </template>
 
 <style>
-body {
-  background-color: aliceblue;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-.body-container {
-  background-color: white;
-  height: 100vh;
-  padding: 1rem;
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
