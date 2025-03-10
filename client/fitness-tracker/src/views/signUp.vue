@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { addToUsers } from '@/models/users';
+import { addToUsers } from '@/models/users.ts';
 
 export default {
     name: 'SignUp',
@@ -28,8 +28,9 @@ export default {
     },
     methods: {
         signUp() {
-            addToUsers(this.username, this.password);
+            addToUsers({ username: this.username, password: this.password });
             alert('User created successfully');
+            this.$router.push('/login');
             
         }
     }

@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import { users } from '@/models/users'; 
+
+import { findUser, setCurrentUser } from '@/models/users.ts';
 
 export default {
     name: 'LogIn',
@@ -28,23 +29,18 @@ export default {
     },
     methods: {
         login() {
-            let user = null;
-            for (let i = 0; i < users.length; i++) {
-            if (users[i].username === this.username && users[i].password === this.password) {
-                user = users[i];
-                break;
-            }
-            }
-
+            
+            const user = findUser(this.username, this.password);
             if (user) {
-            alert('Login successful');
-            this.$router.push('/');
+                setCurrentUser(user);
+                alert('Login successful');
+                this.$router.push('/');
             } else {
-            alert('Incorrect username or password');
+                alert('Incorrect username or password');
             }
         }
     }
-};
+}
 </script>
 
 <style scoped>

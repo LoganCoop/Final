@@ -2,19 +2,9 @@
 import { ref } from 'vue'
 
 const isActive = ref(false)
+import { currentUser } from '@/models/users'
 
-
-const clearData = (username: string) => {
-    localStorage.removeItem(`${username}Token`);
-    console.log(`Data cleared for ${username}`);
-    window.location.reload();
-}
-
-const logOutUser = (username: string) => {
-    localStorage.removeItem(`${username}Token`);
-    console.log(`${username} logged out`);
-    window.location.reload();
-}
+const username = currentUser.value?.username
 
 </script>
 
@@ -77,6 +67,9 @@ const logOutUser = (username: string) => {
 
                 <div class="navbar-end">
                     <div class="navbar-item">
+                        <div v-if="username" class="user-info">
+                            <span>Welcome, {{ username }}</span>
+                        </div>
                         <div class="buttons">
                             <RouterLink to="/sign-up" class="button is-primary">
                                 <strong>Sign up</strong>
@@ -95,18 +88,6 @@ const logOutUser = (username: string) => {
                                         <RouterLink to="/login" class="dropdown-item">
                                             Log in
                                         </RouterLink>
-                                        <a class="dropdown-item" @click="logOutUser('user')">
-                                            <span class="icon">
-                                                <i class="fas fa-sign-out-alt"></i>
-                                            </span>
-                                            <span>Log out</span>
-                                        </a>
-                                        <a class="dropdown-item" @click="clearData('user')">
-                                            <span class="icon">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </span>
-                                            <span>Clear Data</span>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
