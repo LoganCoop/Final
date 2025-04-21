@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'MyActivity',
     data() {
@@ -54,7 +56,7 @@ export default {
         }
     },
     methods: {
-        addWorkout() {
+        async addWorkout() {
             const userToken = localStorage.getItem('userToken');
             if (userToken) {
                 const workoutData = {
@@ -63,25 +65,34 @@ export default {
                     distance: this.distance,
                     userToken: userToken
                 };
-                // Save workout data to local storage
-                let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-                workouts.push(workoutData);
-                localStorage.setItem('workouts', JSON.stringify(workouts));
-                // Update workouts list
-                this.workouts = workouts;
-                // Reset form
-                this.workout = '';
-                this.duration = '';
-                this.distance = '';
-                console.log('Workout added:', workoutData);
+                try {
+                    const response = await axios.post('http://localhost:3000/api/workouts', workoutData);
+                    this.workouts.push(response.data);
+                    // Reset form
+                    this.workout = '';
+                    this.duration = '';
+                    this.distance = '';
+                    console.log('Workout added:', response.data);
+                } catch (error) {
+                    console.error('Error adding workout:', error);
+                }
             } else {
                 console.log('User is not logged in.');
+            }
+        },
+        async fetchWorkouts() {
+            try {
+                const response = await axios.get('http://localhost:3000/api/workouts');
+                this.workouts = response.data;
+            } catch (error) {
+                console.error('Error fetching workouts:', error);
             }
         }
     },
     mounted() {
-        // Load workouts from local storage
-        this.workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+        if (this.isLoggedIn) {
+            this.fetchWorkouts();
+        }
     }
 };
 </script>

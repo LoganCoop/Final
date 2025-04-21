@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import usersController from './controllers/users.js';
 import authController from './controllers/auth.js';
+import workoutsController from './controllers/workouts.js';
 
 const PORT = 3000;
 const app = express();
@@ -28,6 +29,9 @@ app.get('/api/users', usersController.getAllUsers);
 
 // Register the auth controller
 app.use('/api/auth', authController);
+
+// Register the workouts controller
+app.use('/api/workouts', workoutsController);
 
 // Add global error-handling middleware
 app.use((err, req, res, next) => {
