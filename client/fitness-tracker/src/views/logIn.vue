@@ -17,7 +17,7 @@
 
 <script>
 
-import { findUser, setCurrentUser } from '@/models/users.ts';
+import { findUser } from '@/models/users';
 
 export default {
     name: 'LogIn',
@@ -28,15 +28,17 @@ export default {
         };
     },
     methods: {
-        login() {
-            
-            const user = findUser(this.username, this.password);
-            if (user) {
-                setCurrentUser(user);
-                alert('Login successful');
-                this.$router.push('/');
-            } else {
-                alert('Incorrect username or password');
+        async login() {
+            try {
+                const user = await findUser(this.username, this.password);
+                if (user) {
+                    alert('Login successful');
+                    this.$router.push('/');
+                } else {
+                    alert('Incorrect username or password');
+                }
+            } catch (error) {
+                alert(`Error logging in: ${error.message}`);
             }
         }
     }

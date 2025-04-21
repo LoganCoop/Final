@@ -6,8 +6,12 @@ import NavBar from './components/NavBar.vue'
 onMounted(() => {
   fetch('http://localhost:3000')
     .then(response => response.text())
-    .then(data => console.log('Server Response:', data))
-    .catch(error => console.error('Error connecting to server:', error));
+    .then(data => {
+      // Handle server response
+    })
+    .catch(error => {
+      // Handle connection error
+    });
 });
 
 </script>

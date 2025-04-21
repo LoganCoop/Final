@@ -1,27 +1,19 @@
-import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import VueRouter from 'unplugin-vue-router/vite';
+import { fileURLToPath, URL } from 'node:url';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // Vue Router plugin for handling routes
-    VueRouter({
-      /* Add specific options here if needed */
-    }),
-    // Vue plugin for single-file components
+    VueRouter(),
     vue(),
-    // Vue JSX plugin for JSX/TSX support
     vueJsx(),
-    // Vue DevTools plugin for debugging
     vueDevTools(),
   ],
   resolve: {
     alias: {
-      // Alias '@' to the 'src' directory for cleaner imports
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
@@ -32,6 +24,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\\api/, '/api'),
       },
+    },
+    fs: {
+      strict: false,
+    },
+    hmr: {
+      overlay: false,
     },
   },
 });

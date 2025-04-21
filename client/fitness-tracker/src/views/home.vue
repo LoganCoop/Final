@@ -22,24 +22,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
-const weeklyDistance = ref(0);
-const timeExercising = ref(0);
-const caloriesBurnt = ref(0);
-
-onMounted(() => {
-  fetch('http://localhost:3000/api/users')
-    .then(response => response.json())
-    .then(data => {
-      // Example: Update stats based on fetched data
-      weeklyDistance.value = data.weeklyDistance || 0;
-      timeExercising.value = data.timeExercising || 0;
-      caloriesBurnt.value = data.caloriesBurnt || 0;
-    })
-    .catch(error => console.error('Error fetching data:', error));
-});
+<script>
+export default {
+  name: 'HomeView',
+  data() {
+    return {
+      weeklyDistance: 0,
+      timeExercising: 0,
+      caloriesBurnt: 0
+    };
+  }
+};
 </script>
 
 <style scoped>
