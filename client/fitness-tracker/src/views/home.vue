@@ -22,39 +22,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HomePage',
-  data() {
-  return {
-    weeklyDistance: 0,
-    timeExercising: 0,
-    caloriesBurnt: 0,
-    userId: null 
-  }
-  },
-  methods: {
-  async fetchUserFitnessData() {
-    try {
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
 
-    const data = {
-      weeklyDistance: 12.5,
-      timeExercising: 4.2,
-      caloriesBurnt: 1450
-    };
-    
-    this.weeklyDistance = data.weeklyDistance;
-    this.timeExercising = data.timeExercising;
-    this.caloriesBurnt = data.caloriesBurnt;
-    } catch (error) {
-    console.error('Error fetching fitness data:', error);
-    }
-  }
-  },
-  mounted() {
-  this.fetchUserFitnessData();
-  }
-}
+const weeklyDistance = ref(0);
+const timeExercising = ref(0);
+const caloriesBurnt = ref(0);
+
+onMounted(() => {
+  fetch('http://localhost:3000/api/users')
+    .then(response => response.json())
+    .then(data => {
+      // Example: Update stats based on fetched data
+      weeklyDistance.value = data.weeklyDistance || 0;
+      timeExercising.value = data.timeExercising || 0;
+      caloriesBurnt.value = data.caloriesBurnt || 0;
+    })
+    .catch(error => console.error('Error fetching data:', error));
+});
 </script>
 
 <style scoped>

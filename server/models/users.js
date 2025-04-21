@@ -70,6 +70,18 @@ class UserModel {
 
         return { message: 'User deleted successfully.' };
     }
+
+    static async getAllUsers() {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*');
+
+        if (error) {
+            throw new Error('Error fetching users: ' + error.message);
+        }
+
+        return data;
+    }
 }
 
 export default UserModel;

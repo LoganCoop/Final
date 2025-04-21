@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { onMounted } from 'vue'
 import NavBar from './components/NavBar.vue'
+
+onMounted(() => {
+  fetch('http://localhost:3000')
+    .then(response => response.text())
+    .then(data => console.log('Server Response:', data))
+    .catch(error => console.error('Error connecting to server:', error));
+});
 
 </script>
 
