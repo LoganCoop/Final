@@ -66,26 +66,24 @@ export default {
                     userToken: userToken
                 };
                 try {
-                    const response = await axios.post('http://localhost:3000/api/workouts', workoutData);
+                    const response = await axios.post('/api/workouts', workoutData);
                     this.workouts.push(response.data);
-                    // Reset form
                     this.workout = '';
                     this.duration = '';
                     this.distance = '';
-                    console.log('Workout added:', response.data);
                 } catch (error) {
-                    console.error('Error adding workout:', error);
+                    alert('Error adding workout: ' + error.message);
                 }
             } else {
-                console.log('User is not logged in.');
+                alert('User is not logged in.');
             }
         },
         async fetchWorkouts() {
             try {
-                const response = await axios.get('http://localhost:3000/api/workouts');
+                const response = await axios.get('/api/workouts');
                 this.workouts = response.data;
             } catch (error) {
-                console.error('Error fetching workouts:', error);
+                alert('Error fetching workouts: ' + error.message);
             }
         }
     },

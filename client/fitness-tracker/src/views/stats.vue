@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'StatsPage',
     data() {
@@ -26,6 +28,16 @@ export default {
     computed: {
         isLoggedIn() {
             return !!localStorage.getItem('userToken');
+        }
+    },
+    async mounted() {
+        if (this.isLoggedIn) {
+            try {
+                const response = await axios.get('/api/workouts');
+                this.stats = response.data;
+            } catch (error) {
+                // Optionally show error
+            }
         }
     }
 }

@@ -21,15 +21,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'FriendActivity',
     data() {
         return {
-            friendActivities: [
-                { id: 1, user: 'John Doe', workout: '5km run', date: '2023-10-01' },
-                { id: 2, user: 'Jane Smith', workout: 'Yoga session', date: '2023-10-02' },
-                // Add more activities here
-            ],
+            friendActivities: [],
             newActivity: {
                 user: '',
                 workout: '',
@@ -38,16 +36,26 @@ export default {
         };
     },
     methods: {
-        getUserToken() {
-            // Replace this with the actual logic to retrieve the user token
-            return 'userToken';
+        async fetchActivities() {
+            try {
+                const response = await axios.get('/api/workouts');
+                this.friendActivities = response.data;
+            } catch (error) {
+                // Optionally show error
+            }
         },
-        addActivity() {
-            const newId = this.friendActivities.length + 1;
-            this.friendActivities.push({ id: newId, ...this.newActivity });
-            localStorage.setItem(this.getUserToken(), JSON.stringify(this.friendActivities));
-            this.newActivity = { user: '', workout: '', date: '' };
+        async addActivity() {
+            try {
+                const response = await axios.post('/api/workouts', this.newActivity);
+                this.friendActivities.push(response.data);
+                this.newActivity = { user: '', workout: '', date: '' };
+            } catch (error) {
+                // Optionally show error
+            }
         }
+    },
+    mounted() {
+        this.fetchActivities();
     }
 };
 </script>

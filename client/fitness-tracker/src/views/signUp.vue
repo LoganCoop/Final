@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { addToUsers } from '@/models/users';
+import { signup } from '@/models/users';
 
 export default {
     name: 'SignUp',
@@ -29,7 +29,7 @@ export default {
     methods: {
         async signUp() {
             try {
-                await addToUsers({ username: this.username, password: this.password });
+                await signup(this.username, this.password);
                 alert('User created successfully');
                 this.$router.push('/login');
             } catch (error) {

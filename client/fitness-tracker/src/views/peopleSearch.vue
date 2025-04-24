@@ -22,30 +22,42 @@
 </template>
 
 <script>
+import { fetchUsers } from '@/models/users';
+
 export default {
     name: 'PeopleSearch',
     data() {
         return {
-            isLoggedIn: false, 
+            isLoggedIn: false,
             searchQuery: '',
-            searchResults: []
+            searchResults: [],
+            allUsers: []
         };
     },
     methods: {
-        searchUsers() {
-            
-            const allUsers = [
-                { id: 1, name: 'John Doe', stats: 'Stats for John' },
-                { id: 2, name: 'Jane Smith', stats: 'Stats for Jane' }
-            ];
-            this.searchResults = allUsers.filter(user =>
-                user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        async searchUsers() {
+            if (!this.allUsers.length) {
+                try {
+                    this.allUsers = await fetchUsers();
+                } catch (error) {
+                    alert('Failed to fetch users: ' + error.message);
+                    return;
+                }
+            }
+            this.searchResults = this.allUsers.filter(user =>
+                user.username && user.username.toLowerCase().includes(this.searchQuery.toLowerCase())
             );
         }
     },
-    created() {
-        
-        this.isLoggedIn = true; 
+    async created() {
+        this.isLoggedIn = !!localStorage.getItem('userToken');
+        if (this.isLoggedIn) {
+            try {
+                this.allUsers = await fetchUsers();
+            } catch (error) {
+                // Ignore error for now
+            }
+        }
     }
 };
 </script>

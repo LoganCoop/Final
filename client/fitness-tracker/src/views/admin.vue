@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { fetchUsers } from '@/models/users';
+
 export default {
     name: 'AdminPanel',
     data() {
@@ -52,33 +54,25 @@ export default {
         };
     },
     methods: {
-        fetchUsers() {
-            const users = localStorage.getItem('users');
-            if (users) {
-                this.users = JSON.parse(users);
+        async fetchUsers() {
+            try {
+                this.users = await fetchUsers();
+            } catch (error) {
+                alert('Failed to fetch users: ' + error.message);
             }
         },
         addUser() {
-            this.newUser.id = Date.now();
-            this.users.push({ ...this.newUser });
-            this.newUser = { name: '', email: '' };
-            this.saveUsers();
+            // Implement add user via API if needed
         },
         updateUser() {
-            const index = this.users.findIndex(user => user.id === this.userForm.id);
-            if (index !== -1) {
-                this.users.splice(index, 1, { ...this.userForm });
-            }
-            this.resetForm();
-            this.saveUsers();
+            // Implement update user via API if needed
         },
         editUser(user) {
             this.userForm = { ...user };
             this.isEditing = true;
         },
         deleteUser(userId) {
-            this.users = this.users.filter(user => user.id !== userId);
-            this.saveUsers();
+            // Implement delete user via API if needed
         },
         resetForm() {
             this.userForm = { id: null, name: '', email: '' };

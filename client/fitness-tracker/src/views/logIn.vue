@@ -16,8 +16,7 @@
 </template>
 
 <script>
-
-import { findUser } from '@/models/users';
+import { login } from '@/models/users';
 
 export default {
     name: 'LogIn',
@@ -30,13 +29,9 @@ export default {
     methods: {
         async login() {
             try {
-                const user = await findUser(this.username, this.password);
-                if (user) {
-                    alert('Login successful');
-                    this.$router.push('/');
-                } else {
-                    alert('Incorrect username or password');
-                }
+                await login(this.username, this.password);
+                alert('Login successful');
+                this.$router.push('/');
             } catch (error) {
                 alert(`Error logging in: ${error.message}`);
             }
