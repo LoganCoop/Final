@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const isActive = ref(false)
+import { ref, computed } from 'vue'
 import { currentUser } from '@/models/users'
 
-const username = currentUser.value?.username
-
+const isActive = ref(false)
+const username = computed(() => currentUser.value?.username)
 </script>
 
 <template>
@@ -67,13 +65,13 @@ const username = currentUser.value?.username
 
                 <div class="navbar-end">
                     <div class="navbar-item">
-                        <div v-if="username" class="user-info">
-                            <span>Welcome, {{ username }}</span>
-                        </div>
                         <div class="buttons">
                             <RouterLink to="/sign-up" class="button is-primary">
                                 <strong>Sign up</strong>
                             </RouterLink>
+                            <span v-if="username" class="user-info" style="margin-left: 1em; font-weight: bold; color: #fff;">
+                                {{ username }}
+                            </span>
                             <div class="dropdown is-hoverable">
                                 <div class="dropdown-trigger">
                                     <button class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
