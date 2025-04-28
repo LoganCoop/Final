@@ -56,10 +56,23 @@ export default {
     },
     methods: {
         async fetchUsersList() {
+            if (!this.currentUser || !this.currentUser.is_admin) {
+                this.isAdmin = false;
+                this.loading = false;
+                return;
+            }
             try {
-                this.users = await fetchUsers();
+                // Always send x-user-id header for admin routes
+                const userId = this.currentUser.id;
+                this.users = await fetchUsers(userId);
             } catch (error) {
-                alert('Failed to fetch users: ' + error.message);
+                if (error.message.includes('401') || error.message.includes('403')) {
+                    this.isAdmin = false;
+                } else {
+                    alert('Failed to fetch users: ' + error.message);
+                }
+            } finally {
+                this.loading = false;
             }
         },
         async updateUser() {
@@ -95,14 +108,7 @@ export default {
     },
     async mounted() {
         this.loading = true;
-        if (!this.currentUser || !this.currentUser.is_admin) {
-            this.isAdmin = false;
-            this.loading = false;
-            return;
-        }
-        this.isAdmin = true;
         await this.fetchUsersList();
-        this.loading = false;
     }
 };
 </script>

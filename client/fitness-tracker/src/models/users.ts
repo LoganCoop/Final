@@ -26,14 +26,17 @@ export async function signup(username: string, password: string) {
   }
 }
 
-export async function fetchUsers() {
+export async function fetchUsers(userId?: number) {
   try {
-    const user = JSON.parse(localStorage.getItem('userToken') || '{}');
+    const user = userId ? { id: userId } : JSON.parse(localStorage.getItem('userToken') || '{}');
     const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/users', {
       headers: { 'x-user-id': user.id }
     });
     return response.data;
   } catch (error: any) {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      throw new Error(`${error.response.status}: Unauthorized or forbidden. You must be an admin.`);
+    }
     throw new Error(error.response?.data?.error || 'Failed to fetch users');
   }
 }
