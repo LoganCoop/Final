@@ -31,19 +31,11 @@ app.use('/api/workouts', workoutsController);
 // Serve static files from the public directory
 app.use(express.static('public'));
 
-// Fallback to index.html for SPA routing
+// All API routes above this line!
+// Fallback to index.html for SPA routing (must be last)
 app.get('*', (req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
-app.get('/api/users/:userId', requireAdmin, UserController.getUserById);
-app.put('/api/users/:userId', requireAdmin, UserController.updateUser);
-app.delete('/api/users/:userId', requireAdmin, UserController.deleteUser);
-
-// Register the auth controller
-app.use('/api/auth', authController);
-
-// Register the workouts controller
-app.use('/api/workouts', workoutsController);
 
 // Add global error-handling middleware
 app.use((err, req, res, next) => {
