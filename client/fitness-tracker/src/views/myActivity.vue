@@ -62,11 +62,19 @@ export default {
     methods: {
         async addWorkout() {
             if (this.isLoggedIn) {
+                // Always parse userToken as JSON to get the id
+                let userToken = localStorage.getItem('userToken');
+                let userObj = {};
+                try {
+                    userObj = JSON.parse(userToken);
+                } catch (e) {
+                    userObj = {};
+                }
                 const workoutData = {
                     workout: this.workout,
                     duration: this.duration,
                     distance: this.distance,
-                    user_id: this.userId
+                    user_id: userObj.id || this.userId
                 };
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
@@ -83,9 +91,17 @@ export default {
         },
         async fetchWorkouts() {
             if (!this.isLoggedIn) return;
+            // Always parse userToken as JSON to get the id
+            let userToken = localStorage.getItem('userToken');
+            let userObj = {};
+            try {
+                userObj = JSON.parse(userToken);
+            } catch (e) {
+                userObj = {};
+            }
             try {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts', {
-                    params: { user_id: this.userId }
+                    params: { user_id: userObj.id || this.userId }
                 });
                 this.workouts = response.data;
             } catch (error) {
