@@ -78,12 +78,20 @@ export default {
                 };
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
-                    this.workouts.push(response.data);
+                    if (response.data && response.status === 201) {
+                        this.workouts.push(response.data);
+                    } else {
+                        alert('Workout not created. Please try again.');
+                    }
                     this.workout = '';
                     this.duration = '';
                     this.distance = '';
                 } catch (error) {
-                    alert('Error adding workout: ' + (error.response?.data?.error || error.message));
+                    if (error.response && error.response.status === 404) {
+                        alert('Workout API not found (404). Please check your backend deployment.');
+                    } else {
+                        alert('Error adding workout: ' + (error.response?.data?.error || error.message));
+                    }
                 }
             } else {
                 alert('User is not logged in.');
@@ -105,7 +113,11 @@ export default {
                 });
                 this.workouts = response.data;
             } catch (error) {
-                alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
+                if (error.response && error.response.status === 404) {
+                    alert('Workout API not found (404). Please check your backend deployment.');
+                } else {
+                    alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
+                }
             }
         }
     },
