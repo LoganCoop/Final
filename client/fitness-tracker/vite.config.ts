@@ -18,9 +18,8 @@ export default defineConfig({
     },
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
+    proxy: {      '/api': {
+        target: 'https://fitness-tracker-shxf.onrender.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\\api/, '/api'),
       },

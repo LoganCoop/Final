@@ -66,7 +66,7 @@ export default {
                     userToken: userToken
                 };
                 try {
-                    const response = await axios.post('/api/workouts', workoutData);
+                    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                     this.workouts.push(response.data);
                     this.workout = '';
                     this.duration = '';
@@ -80,7 +80,7 @@ export default {
         },
         async fetchWorkouts() {
             try {
-                const response = await axios.get('/api/workouts');
+                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
                 this.workouts = response.data;
             } catch (error) {
                 alert('Error fetching workouts: ' + error.message);

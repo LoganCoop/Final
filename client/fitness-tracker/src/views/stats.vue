@@ -33,7 +33,7 @@ export default {
     async mounted() {
         if (this.isLoggedIn) {
             try {
-                const response = await axios.get('/api/workouts');
+                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
                 this.stats = response.data;
             } catch (error) {
                 // Optionally show error

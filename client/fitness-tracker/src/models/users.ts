@@ -7,7 +7,7 @@ export const currentUser = ref<{ username: string } | null>(null);
 
 export async function login(username: string, password: string) {
   try {
-    const response = await axios.post('/api/auth/login', { username, password });
+    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/auth/login', { username, password });
     currentUser.value = { username };
     localStorage.setItem('userToken', username); // Replace with real token if available
     return response.data;
@@ -18,7 +18,7 @@ export async function login(username: string, password: string) {
 
 export async function signup(username: string, password: string) {
   try {
-    const response = await axios.post('/api/auth/signup', { username, password });
+    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/auth/signup', { username, password });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Signup failed');
@@ -27,7 +27,7 @@ export async function signup(username: string, password: string) {
 
 export async function fetchUsers() {
   try {
-    const response = await axios.get('/api/users');
+    const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/users');
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Failed to fetch users');

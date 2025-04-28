@@ -38,7 +38,7 @@ export default {
     methods: {
         async fetchActivities() {
             try {
-                const response = await axios.get('/api/workouts');
+                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
                 this.friendActivities = response.data;
             } catch (error) {
                 // Optionally show error
@@ -46,7 +46,7 @@ export default {
         },
         async addActivity() {
             try {
-                const response = await axios.post('/api/workouts', this.newActivity);
+                const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', this.newActivity);
                 this.friendActivities.push(response.data);
                 this.newActivity = { user: '', workout: '', date: '' };
             } catch (error) {

@@ -5,7 +5,7 @@ import { onMounted } from 'vue'
 import NavBar from './components/NavBar.vue'
 
 onMounted(() => {
-  fetch('http://localhost:3000')
+  fetch('https://fitness-tracker-shxf.onrender.com')
     .then(response => response.text())
     .then(data => {
       // Handle server response
