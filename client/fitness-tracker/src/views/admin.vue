@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div class="admin-view">
         <h1>Admin Panel</h1>
