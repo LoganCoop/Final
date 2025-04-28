@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios';
+import { currentUser } from '@/models/users';
 
 export default {
     name: 'MyActivity',
@@ -52,18 +53,20 @@ export default {
     },
     computed: {
         isLoggedIn() {
-            return !!localStorage.getItem('userToken');
+            return !!currentUser.value && !!currentUser.value.id;
+        },
+        userId() {
+            return currentUser.value?.id;
         }
     },
     methods: {
         async addWorkout() {
-            const userToken = localStorage.getItem('userToken');
-            if (userToken) {
+            if (this.isLoggedIn) {
                 const workoutData = {
                     workout: this.workout,
                     duration: this.duration,
                     distance: this.distance,
-                    userToken: userToken
+                    user_id: this.userId
                 };
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
@@ -72,24 +75,32 @@ export default {
                     this.duration = '';
                     this.distance = '';
                 } catch (error) {
-                    alert('Error adding workout: ' + error.message);
+                    alert('Error adding workout: ' + (error.response?.data?.error || error.message));
                 }
             } else {
                 alert('User is not logged in.');
             }
         },
         async fetchWorkouts() {
+            if (!this.isLoggedIn) return;
             try {
-                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
+                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts', {
+                    params: { user_id: this.userId }
+                });
                 this.workouts = response.data;
             } catch (error) {
-                alert('Error fetching workouts: ' + error.message);
+                alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
             }
         }
     },
     mounted() {
         if (this.isLoggedIn) {
             this.fetchWorkouts();
+        }
+    },
+    watch: {
+        userId(newVal, oldVal) {
+            if (newVal) this.fetchWorkouts();
         }
     }
 };

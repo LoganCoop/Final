@@ -1,30 +1,34 @@
 import express from 'express';
+import supabase from '../models/supabase.js';
 
 const router = express.Router();
 
-// In-memory storage for workouts (replace with database in production)
-let workouts = [];
-
-// Get all workouts
-router.get('/', (req, res) => {
-    res.json(workouts);
+// Get all workouts for a user (optionally filter by user_id)
+router.get('/', async (req, res) => {
+    const userId = req.query.user_id;
+    let query = supabase.from('u_workouts').select('*');
+    if (userId) query = query.eq('user_id', userId);
+    const { data, error } = await query;
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
 });
 
 // Add a new workout
-router.post('/', (req, res) => {
-    const { workout, duration, distance, userToken } = req.body;
-    if (!workout || !duration || !distance || !userToken) {
+router.post('/', async (req, res) => {
+    const { workout, duration, distance, user_id } = req.body;
+    if (!workout || !duration || !distance || !user_id) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-    const newWorkout = { workout, duration, distance, userToken, id: workouts.length + 1 };
-    workouts.push(newWorkout);
-    res.status(201).json(newWorkout);
+    const { data, error } = await supabase.from('u_workouts').insert([{ workout, duration, distance, user_id }]).select('*');
+    if (error) return res.status(500).json({ error: error.message });
+    res.status(201).json(data[0]);
 });
 
 // Delete a workout by ID
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    workouts = workouts.filter(workout => workout.id !== parseInt(id));
+    const { error } = await supabase.from('u_workouts').delete().eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
     res.status(200).json({ message: 'Workout deleted' });
 });
 
