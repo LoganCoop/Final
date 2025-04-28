@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { refUsers } from '@/models/users';
+import { defineProps } from 'vue'
 
-const users = refUsers();
+const props = defineProps<{ users: Array<{ username: string }> }>()
+
 </script>
 
 <template>
@@ -11,7 +12,7 @@ const users = refUsers();
         </h2>
         <ul>
             <li v-for="user in users" :key="user.username">
-                {{ user.username }} - {{ user.password }}
+                {{ user.username }}
             </li>
         </ul>
     </div>
