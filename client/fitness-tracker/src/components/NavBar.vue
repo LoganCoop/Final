@@ -70,6 +70,7 @@ const username = computed(() => currentUser.value?.username)
                                 <strong>Sign up</strong>
                             </RouterLink>
                             <span v-if="username" class="user-info" style="margin-left: 1em; font-weight: bold; color: #fff;">
+                                <i class="fas fa-user"></i>
                                 {{ username }}
                             </span>
                             <div class="dropdown is-hoverable">
