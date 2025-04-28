@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import usersController from './controllers/users.js';
+import { UserController, requireAdmin } from './controllers/users.js';
 import authController from './controllers/auth.js';
 import workoutsController from './controllers/workouts.js';
 
@@ -21,11 +21,11 @@ app.get('*', (req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-// Add routes for user operations
-app.post('/api/users', usersController.createUser);
-app.put('/api/users/:userId', usersController.updateUser);
-app.delete('/api/users/:userId', usersController.deleteUser);
-app.get('/api/users', usersController.getAllUsers);
+// Add admin-protected routes for user management
+app.get('/api/users', requireAdmin, UserController.getAllUsers);
+app.get('/api/users/:userId', requireAdmin, UserController.getUserById);
+app.put('/api/users/:userId', requireAdmin, UserController.updateUser);
+app.delete('/api/users/:userId', requireAdmin, UserController.deleteUser);
 
 // Register the auth controller
 app.use('/api/auth', authController);

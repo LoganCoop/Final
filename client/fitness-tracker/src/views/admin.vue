@@ -1,90 +1,108 @@
 /* eslint-disable */
 <template>
-    <div class="admin-view">
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="!isAdmin">
+        <h2>Access Denied</h2>
+        <p>You must be an admin to view this page.</p>
+    </div>
+    <div v-else class="admin-view">
         <h1>Admin Panel</h1>
-        
         <div class="user-list">
             <h2>Users</h2>
             <ul>
                 <li v-for="user in users" :key="user.id">
-                    {{ user.name }} - {{ user.email }}
+                    {{ user.username }} - {{ user.email }} <span v-if="user.is_admin">(admin)</span>
                     <button @click="editUser(user)">Edit</button>
                     <button @click="deleteUser(user.id)">Delete</button>
                 </li>
             </ul>
         </div>
-
-        <div class="user-add">
-            <h2>Add User</h2>
-            <form @submit.prevent="addUser">
-                <input v-model="newUser.name" placeholder="Name" required />
-                <input v-model="newUser.email" placeholder="Email" required />
-                <button type="submit">Add</button>
-            </form>
-        </div>
-
         <div class="user-edit" v-if="isEditing">
             <h2>Edit User</h2>
             <form @submit.prevent="updateUser">
-                <input v-model="userForm.name" placeholder="Name" required />
+                <input v-model="userForm.username" placeholder="Username" required />
                 <input v-model="userForm.email" placeholder="Email" required />
+                <label><input type="checkbox" v-model="userForm.is_admin" /> Admin</label>
                 <button type="submit">Update</button>
+                <button type="button" @click="resetForm">Cancel</button>
             </form>
         </div>
     </div>
 </template>
 
 <script>
-import { fetchUsers } from '@/models/users';
+import { fetchUsers, updateUser, deleteUser, currentUser } from '@/models/users';
 
 export default {
     name: 'AdminPanel',
     data() {
         return {
             users: [],
-            newUser: {
-                name: '',
-                email: ''
-            },
             userForm: {
                 id: null,
-                name: '',
-                email: ''
+                username: '',
+                email: '',
+                is_admin: false
             },
-            isEditing: false
+            isEditing: false,
+            isAdmin: false,
+            loading: true
         };
     },
+    computed: {
+        currentUser() {
+            return currentUser.value;
+        }
+    },
     methods: {
-        async fetchUsers() {
+        async fetchUsersList() {
             try {
                 this.users = await fetchUsers();
             } catch (error) {
                 alert('Failed to fetch users: ' + error.message);
             }
         },
-        addUser() {
-            // Implement add user via API if needed
-        },
-        updateUser() {
-            // Implement update user via API if needed
+        async updateUser() {
+            try {
+                await updateUser(this.userForm.id, {
+                    username: this.userForm.username,
+                    email: this.userForm.email,
+                    is_admin: this.userForm.is_admin
+                });
+                this.isEditing = false;
+                this.fetchUsersList();
+            } catch (error) {
+                alert('Failed to update user: ' + error.message);
+            }
         },
         editUser(user) {
             this.userForm = { ...user };
             this.isEditing = true;
         },
-        deleteUser(userId) {
-            // Implement delete user via API if needed
+        async deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user?')) return;
+            try {
+                await deleteUser(userId);
+                this.fetchUsersList();
+            } catch (error) {
+                alert('Failed to delete user: ' + error.message);
+            }
         },
         resetForm() {
-            this.userForm = { id: null, name: '', email: '' };
+            this.userForm = { id: null, username: '', email: '', is_admin: false };
             this.isEditing = false;
-        },
-        saveUsers() {
-            localStorage.setItem('users', JSON.stringify(this.users));
         }
     },
-    mounted() {
-        this.fetchUsers();
+    async mounted() {
+        this.loading = true;
+        if (!this.currentUser || !this.currentUser.is_admin) {
+            this.isAdmin = false;
+            this.loading = false;
+            return;
+        }
+        this.isAdmin = true;
+        await this.fetchUsersList();
+        this.loading = false;
     }
 };
 </script>

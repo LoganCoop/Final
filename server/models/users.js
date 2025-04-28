@@ -1,5 +1,5 @@
 import supabase from './supabase.js';
-import { BadRequestError, NotFoundError } from './errors.js';
+import { BadRequestError, NotFoundError, ForbiddenError } from './errors.js';
 
 class UserModel {
     static async createUser(userData) {
@@ -31,56 +31,61 @@ class UserModel {
         return user;
     }
 
+    static async getAllUsers() {
+        const { data, error } = await supabase
+            .from('users')
+            .select('id, username, email, is_admin');
+        if (error) {
+            throw new Error('Error fetching users: ' + error.message);
+        }
+        return data;
+    }
+
     static async getUserById(userId) {
         const { data, error } = await supabase
-            .from('profiles')
-            .select('*')
+            .from('users')
+            .select('id, username, email, is_admin')
             .eq('id', userId)
             .single();
-
         if (error || !data) {
             throw new NotFoundError('User not found.');
         }
-
         return data;
     }
 
     static async updateUser(userId, updates) {
         const { data, error } = await supabase
-            .from('profiles')
+            .from('users')
             .update(updates)
-            .eq('id', userId);
-
+            .eq('id', userId)
+            .select('id, username, email, is_admin');
         if (error || !data.length) {
             throw new NotFoundError('Failed to update user or user not found.');
         }
-
         return data[0];
     }
 
     static async deleteUser(userId) {
         const { error } = await supabase
-            .from('profiles')
+            .from('users')
             .delete()
             .eq('id', userId);
-
         if (error) {
             throw new NotFoundError('Failed to delete user or user not found.');
         }
-
         return { message: 'User deleted successfully.' };
     }
 
-    static async getAllUsers() {
+    static async isAdmin(userId) {
         const { data, error } = await supabase
-            .from('profiles')
-            .select('*');
-
-        if (error) {
-            throw new Error('Error fetching users: ' + error.message);
+            .from('users')
+            .select('is_admin')
+            .eq('id', userId)
+            .single();
+        if (error || !data) {
+            throw new ForbiddenError('User not found or not authorized.');
         }
-
-        return data;
+        return !!data.is_admin;
     }
 }
 
