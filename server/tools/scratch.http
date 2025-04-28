@@ -1,5 +1,6 @@
 ### Get all users
-GET http://localhost:3000/api/users
+GET https://fitness-tracker-shxf.onrender.com/api/users
+x-user-id: <ADMIN_USER_ID>
 Content-Type: application/json
 
 ###
@@ -17,16 +18,34 @@ Content-Type: application/json
 ###
 
 ### Update a user
-PUT http://localhost:3000/api/users/1
+PUT https://fitness-tracker-shxf.onrender.com/api/users/1
+x-user-id: <ADMIN_USER_ID>
 Content-Type: application/json
 
 {
     "username": "updated_user",
-    "email": "updated_user@example.com"
+    "email": "updated_user@example.com",
+    "is_admin": false
 }
 
 ###
 
 ### Delete a user
-DELETE http://localhost:3000/api/users/1
+DELETE https://fitness-tracker-shxf.onrender.com/api/users/1
+x-user-id: <ADMIN_USER_ID>
 Content-Type: application/json
+
+###
+
+### Admin login (get user id and is_admin)
+POST https://fitness-tracker-shxf.onrender.com/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin_username",
+    "password": "admin_password"
+}
+
+###
+
+# Replace <ADMIN_USER_ID> with the id of an admin user returned from login.
