@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoggedIn">
+    <div v-if="isLoggedIn"> 
         <h1>People Search</h1>
         <input v-model="searchQuery" placeholder="Search for users..." />
         <button @click="searchUsers">Search</button>
