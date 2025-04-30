@@ -54,12 +54,15 @@ class UserModel {
     }
 
     static async updateUser(userId, updates) {
+        console.log('Updating user with ID:', userId); // Debugging log
+        console.log('Updates:', updates); // Debugging log
         const { data, error } = await supabase
             .from('users')
             .update(updates)
             .eq('id', userId)
             .select('id, username, is_admin');
         if (error || !data.length) {
+            console.error('Error updating user:', error); // Debugging log
             throw new NotFoundError('Failed to update user or user not found.');
         }
         return data[0];
