@@ -14,9 +14,9 @@ function handleLogout() {
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="vuejs.org">
+                <span class="navbar-item">
                     <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="30" />
-                </a>
+                </span>
 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
                    :class="{ 'is-active': isActive }" @click="isActive = !isActive">
