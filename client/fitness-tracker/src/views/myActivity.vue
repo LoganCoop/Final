@@ -177,63 +177,56 @@ export default {
 </script>
 
 <style scoped>
-div {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+.my-activity {
+    padding: 32px 10vw 32px 10vw;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+.my-activity h1, .my-activity h2 {
+    font-size: 2.2em;
+    margin-bottom: 32px;
+    color: #2d3a4b;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+    padding: 28px 24px 20px 24px;
+    margin-bottom: 32px;
+    border: 1px solid #e3e3e3;
 }
 
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
+form label {
+    font-weight: 600;
+    color: #2d3a4b;
+    margin-bottom: 8px;
 }
 
-input {
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-button {
+form input {
+    margin-bottom: 16px;
     padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+}
+
+form button {
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
-button:hover {
+form button:hover {
     background-color: #0056b3;
-}
-
-p {
-    text-align: center;
-    color: #666;
-}
-
-.workout-list {
-    margin-top: 20px;
-}
-
-.workout-list h2 {
-    text-align: center;
-    color: #333;
 }
 
 .workout-list ul {
@@ -242,24 +235,33 @@ p {
 }
 
 .workout-list li {
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #e3e3e3;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd;
+    transition: transform 0.15s;
 }
 
-.workout-content {
-    display: flex;
-    flex-direction: column;
+.workout-list li:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(44, 62, 80, 0.13);
+}
+
+.workout-content p {
+    margin: 0;
+    color: #2d3a4b;
+    font-weight: 500;
 }
 
 .workout-list li span {
-    font-size: 12px;
-    color: #999;
+    font-size: 0.9em;
+    color: #7b8ca7;
+    font-weight: 500;
 }
 
 .login-required-popup {
