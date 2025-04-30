@@ -2,7 +2,6 @@ import UserModel from '../models/users.js';
 import { BadRequestError, NotFoundError, ForbiddenError } from '../models/errors.js';
 
 async function requireAdmin(req, res, next) {
-    // Assume admin user id is sent as req.header('x-user-id') or similar (adjust as needed)
     const userId = req.header('x-user-id');
     if (!userId) return res.status(401).json({ error: 'Missing user id' });
     try {
@@ -36,8 +35,8 @@ class UserController {
 
     static async getUserById(req, res, next) {
         try {
-            const { userId } = req.params;
-            const user = await UserModel.getUserById(userId);
+            const { id } = req.params;
+            const user = await UserModel.getUserById(id);
             res.status(200).json(user);
         } catch (error) {
             next(error);
@@ -46,9 +45,9 @@ class UserController {
 
     static async updateUser(req, res, next) {
         try {
-            const { userId } = req.params;
+            const { id } = req.params;
             const updates = req.body;
-            const updatedUser = await UserModel.updateUser(userId, updates);
+            const updatedUser = await UserModel.updateUser(id, updates);
             res.status(200).json(updatedUser);
         } catch (error) {
             next(error);
@@ -57,8 +56,8 @@ class UserController {
 
     static async deleteUser(req, res, next) {
         try {
-            const { userId } = req.params;
-            const result = await UserModel.deleteUser(userId);
+            const { id } = req.params;
+            const result = await UserModel.deleteUser(id);
             res.status(200).json(result);
         } catch (error) {
             next(error);
@@ -66,5 +65,4 @@ class UserController {
     }
 }
 
-// Export with admin middleware for routes
 export { UserController, requireAdmin };

@@ -14,7 +14,7 @@
             <button @click="addUser">Add User</button>
             <ul>
                 <li v-for="user in users" :key="user.id">
-                    {{ user.username }} - {{ user.email }} <span v-if="user.is_admin">(admin)</span>
+                    {{ user.username }} <span v-if="user.is_admin">(admin)</span>
                     <button @click="editUser(user)">Edit</button>
                     <button @click="deleteUser(user.id)">Delete</button>
                 </li>
@@ -39,7 +39,6 @@
             <h2>Edit User</h2>
             <form @submit.prevent="updateUser">
                 <input v-model="userForm.username" placeholder="Username" required />
-                <input v-model="userForm.email" placeholder="Email" required />
                 <label><input type="checkbox" v-model="userForm.is_admin" /> Admin</label>
                 <button type="submit">Update</button>
                 <button type="button" @click="resetUserForm">Cancel</button>
@@ -72,7 +71,6 @@ export default {
             userForm: {
                 id: null,
                 username: '',
-                email: '',
                 is_admin: false
             },
             workoutForm: {
@@ -111,7 +109,6 @@ export default {
             try {
                 await updateUser(this.userForm.id, {
                     username: this.userForm.username,
-                    email: this.userForm.email,
                     is_admin: this.userForm.is_admin
                 });
                 this.isEditingUser = false;
@@ -153,7 +150,7 @@ export default {
         },
         async addUser() {
             try {
-                const newUser = { username: 'New User', email: 'newuser@example.com', is_admin: false };
+                const newUser = { username: 'New User', is_admin: false };
                 await addUser(newUser);
                 this.fetchUsersList();
             } catch (error) {
@@ -178,7 +175,7 @@ export default {
             this.isEditingWorkout = true;
         },
         resetUserForm() {
-            this.userForm = { id: null, username: '', email: '', is_admin: false };
+            this.userForm = { id: null, username: '', is_admin: false };
             this.isEditingUser = false;
         },
         resetWorkoutForm() {
