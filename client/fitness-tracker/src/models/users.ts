@@ -74,3 +74,27 @@ export function logout() {
   currentUser.value = null;
   localStorage.removeItem('userToken');
 }
+
+export async function addUser(newUser: { username: string; is_admin: boolean }) {
+  try {
+    const user = JSON.parse(localStorage.getItem('userToken') || '{}');
+    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/users', newUser, {
+      headers: { 'x-user-id': user.id }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to add user');
+  }
+}
+
+export async function updateWorkout(workoutId: number, updates: { workout: string; duration: number; distance: number }) {
+  try {
+    const user = JSON.parse(localStorage.getItem('userToken') || '{}');
+    const response = await axios.put(`https://fitness-tracker-shxf.onrender.com/api/workouts/${workoutId}`, updates, {
+      headers: { 'x-user-id': user.id }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to update workout');
+  }
+}

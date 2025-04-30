@@ -107,6 +107,7 @@ export default {
         },
         async updateUser() {
             try {
+                console.log('Updating user with payload:', this.userForm); // Debugging log
                 // Ensure the payload matches the server's expected format
                 const payload = {
                     username: this.userForm.username,
@@ -116,6 +117,7 @@ export default {
                 this.isEditingUser = false;
                 this.fetchUsersList();
             } catch (error) {
+                console.error('Error updating user:', error); // Debugging log
                 alert('Failed to update user: ' + (error.response?.data?.error || error.message));
             }
         },
@@ -169,6 +171,7 @@ export default {
             }
         },
         editUser(user) {
+            console.log('Editing user:', user); // Debugging log
             this.userForm = { ...user };
             this.isEditingUser = true;
         },
