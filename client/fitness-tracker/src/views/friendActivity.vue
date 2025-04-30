@@ -14,17 +14,6 @@
                 </div>
             </li>
         </ul>
-        <div class="add-activity">
-            <h2>Add Your Activity</h2>
-            <form @submit.prevent="addActivity">
-                <input v-model="newActivity.user" type="text" placeholder="Your Name" required>
-                <input v-model="newActivity.workout" type="text" placeholder="Workout Description" required>
-                <input v-model="newActivity.duration" type="number" placeholder="Duration (minutes)" required>
-                <input v-model="newActivity.distance" type="number" placeholder="Distance (km)" required>
-                <input v-model="newActivity.date" type="date" required>
-                <button type="submit">Add Activity</button>
-            </form>
-        </div>
     </div>
 </template>
 
@@ -127,47 +116,5 @@ export default {
 .activity-body p {
     margin: 4px 0;
     color: #555;
-}
-
-.add-activity {
-    margin-top: 40px;
-    text-align: center;
-}
-
-.add-activity h2 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    color: #2d3a4b;
-}
-
-.add-activity form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.add-activity input {
-    margin-bottom: 12px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 1em;
-}
-
-.add-activity button {
-    padding: 12px 24px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.add-activity button:hover {
-    background-color: #0056b3;
 }
 </style>
