@@ -34,7 +34,7 @@ class UserModel {
     static async getAllUsers() {
         const { data, error } = await supabase
             .from('users')
-            .select('id, username, email, is_admin');
+            .select('id, username, is_admin');
         if (error) {
             throw new Error('Error fetching users: ' + error.message);
         }
@@ -44,7 +44,7 @@ class UserModel {
     static async getUserById(userId) {
         const { data, error } = await supabase
             .from('users')
-            .select('id, username, email, is_admin')
+            .select('id, username, is_admin')
             .eq('id', userId)
             .single();
         if (error || !data) {
@@ -58,7 +58,7 @@ class UserModel {
             .from('users')
             .update(updates)
             .eq('id', userId)
-            .select('id, username, email, is_admin');
+            .select('id, username, is_admin');
         if (error || !data.length) {
             throw new NotFoundError('Failed to update user or user not found.');
         }

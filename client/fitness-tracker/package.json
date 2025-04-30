@@ -6,6 +6,7 @@
     "dev": "vite",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "postbuild": "powershell Copy-Item -Path 'dist/*' -Destination '..\\..\\server\\public\\' -Recurse -Force; cd ../../server; npm run dev",
     "lint": "vue-cli-service lint",
     "preview": "vite preview"
   },

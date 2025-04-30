@@ -9,6 +9,10 @@ export async function login(username: string, password: string) {
   try {
     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/auth/login', { username, password });
     // Assume backend returns user id and is_admin
+    if (!response.data.id) {
+      alert('Login failed: No user ID returned from server.');
+      throw new Error('No user ID returned from server');
+    }
     currentUser.value = { id: response.data.id, username, is_admin: response.data.is_admin };
     localStorage.setItem('userToken', JSON.stringify(currentUser.value));
     return response.data;

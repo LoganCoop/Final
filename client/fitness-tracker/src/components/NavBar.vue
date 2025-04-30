@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { currentUser } from '@/models/users'
+import { currentUser, logout } from '@/models/users'
 
 const isActive = ref(false)
 const username = computed(() => currentUser.value?.username)
+
+function handleLogout() {
+  logout()
+}
 </script>
 
 <template>
@@ -69,14 +73,12 @@ const username = computed(() => currentUser.value?.username)
                             <RouterLink to="/sign-up" class="button is-primary">
                                 <strong>Sign up</strong>
                             </RouterLink>
-                            <span v-if="username" class="user-info" style="margin-left: 1em; font-weight: bold; color: #fff;">
-                                <i class="fas fa-user"></i>
-                                {{ username }}
-                            </span>
+                            <!-- Remove username and logout from here -->
                             <div class="dropdown is-hoverable">
                                 <div class="dropdown-trigger">
                                     <button class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
-                                        <span>Log in</span>
+                                        <span v-if="username"><i class="fas fa-user"></i> {{ username }}</span>
+                                        <span v-else>Log in</span>
                                         <span class="icon is-small">
                                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                                         </span>
@@ -84,9 +86,15 @@ const username = computed(() => currentUser.value?.username)
                                 </div>
                                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                                     <div class="dropdown-content">
-                                        <RouterLink to="/login" class="dropdown-item">
+                                        <RouterLink v-if="!username" to="/login" class="dropdown-item">
                                             Log in
                                         </RouterLink>
+                                        <div v-else class="dropdown-item" style="display: flex; align-items: center;">
+                                            <i class="fas fa-user" style="margin-right: 0.5em;"></i> {{ username }}
+                                        </div>
+                                        <button v-if="username" class="dropdown-item button is-danger is-small" @click="handleLogout">
+                                            Log out
+                                        </button>
                                     </div>
                                 </div>
                             </div>

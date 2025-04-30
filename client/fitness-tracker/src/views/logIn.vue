@@ -4,14 +4,20 @@
         <form @submit.prevent="login">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" v-model="username" required />
+                <input id="username" type="text" v-model="username" required />
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" v-model="password" required />
+                <input id="password" type="password" v-model="password" required />
             </div>
             <button type="submit">Login</button>
         </form>
+        <div v-if="showSuccess" class="login-success-popup">
+            <div class="popup-content">
+                <span class="success-icon">✔️</span>
+                <span>Login successful!</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -23,15 +29,19 @@ export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            showSuccess: false
         };
     },
     methods: {
         async login() {
             try {
                 await login(this.username, this.password);
-                alert('Login successful');
-                this.$router.push('/');
+                this.showSuccess = true;
+                setTimeout(() => {
+                    this.showSuccess = false;
+                    this.$router.push('/my-activity');
+                }, 1200);
             } catch (error) {
                 alert(`Error logging in: ${error.message}`);
             }
@@ -76,5 +86,39 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.login-success-popup {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #e6ffed;
+    border: 2px solid #38c172;
+    color: #155724;
+    padding: 24px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    font-size: 1.3em;
+    animation: fadeIn 0.3s;
+}
+
+.popup-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.success-icon {
+    font-size: 2em;
+    color: #38c172;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>My Activity</h1>
-        <div v-if="isLoggedIn">
+        <div>
             <form @submit.prevent="addWorkout">
                 <div>
                     <label for="workout">Workout:</label>
@@ -31,8 +31,11 @@
                 </ul>
             </div>
         </div>
-        <div v-else>
-            <p>Please log in to add your workout stats.</p>
+        <div v-if="!isLoggedIn" class="login-required-popup">
+            <div class="popup-content">
+                <span class="warning-icon">⚠️</span>
+                <span>Please log in to add your workout stats.</span>
+            </div>
         </div>
     </div>
 </template>
@@ -53,10 +56,20 @@ export default {
     },
     computed: {
         isLoggedIn() {
-            return !!currentUser.value && !!currentUser.value.id;
+            // Only check for the presence of a userToken in localStorage
+            return Boolean(localStorage.getItem('userToken'));
         },
         userId() {
-            return currentUser.value?.id;
+            // Always parse userToken as JSON to get the id
+            let userToken = localStorage.getItem('userToken');
+            let userObj = {};
+            try {
+                userObj = JSON.parse(userToken);
+            } catch (e) {
+                userObj = {};
+            }
+            // Use id for user id
+            return userObj.id || null;
         }
     },
     methods: {
@@ -70,12 +83,19 @@ export default {
                 } catch (e) {
                     userObj = {};
                 }
+                // DEBUG: Show the parsed user token
+                console.log('userObj', userObj);
                 const workoutData = {
                     workout: this.workout,
                     duration: this.duration,
                     distance: this.distance,
-                    user_id: userObj.id || this.userId
+                    user_id: userObj['user-id'] || userObj.user_id || userObj.id || this.userId
                 };
+                console.log('workoutData', workoutData); // DEBUG: See what is being sent
+                if (!workoutData.user_id) {
+                    alert('User ID is missing. Please log in again.');
+                    return;
+                }
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                     if (response.data && response.status === 201) {
@@ -122,11 +142,27 @@ export default {
         }
     },
     mounted() {
-        if (this.isLoggedIn) {
-            this.fetchWorkouts();
-        }
+        // Always fetch workouts on mount if logged in
+        this.$watch(
+            () => currentUser.value && currentUser.value.id,
+            (newVal) => {
+                if (newVal) {
+                    this.fetchWorkouts();
+                } else {
+                    this.workouts = [];
+                }
+            },
+            { immediate: true }
+        );
     },
     watch: {
+        isLoggedIn(newVal, oldVal) {
+            if (newVal) {
+                this.fetchWorkouts();
+            } else {
+                this.workouts = [];
+            }
+        },
         userId(newVal, oldVal) {
             if (newVal) this.fetchWorkouts();
         }
@@ -218,5 +254,29 @@ p {
 .workout-list li span {
     font-size: 12px;
     color: #999;
+}
+
+.login-required-popup {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff3cd;
+    border: 2px solid #ffe066;
+    color: #856404;
+    padding: 24px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    font-size: 1.3em;
+    animation: fadeIn 0.3s;
+}
+
+.warning-icon {
+    font-size: 2em;
+    color: #ffc107;
+    margin-right: 12px;
 }
 </style>

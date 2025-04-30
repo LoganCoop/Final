@@ -10,16 +10,20 @@ router.post('/signup', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const { error } = await supabase.from('users').insert({
-            username,
-            password_hash: hashedPassword
-        });
+        const { data, error } = await supabase
+            .from('users')
+            .insert({
+                username,
+                password_hash: hashedPassword
+            })
+            .select('id, username, is_admin')
+            .single();
 
         if (error) {
             return res.status(400).json({ error: error.message });
         }
 
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ id: data.id, username: data.username, is_admin: data.is_admin || false });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -32,7 +36,7 @@ router.post('/login', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('users')
-            .select('username, password_hash')
+            .select('id, username, password_hash, is_admin')
             .eq('username', username)
             .single();
 
@@ -45,7 +49,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        res.status(200).json({ message: 'Login successful' });
+        res.status(200).json({ id: data.id, username: data.username, is_admin: data.is_admin });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
     }
