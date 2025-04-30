@@ -45,8 +45,17 @@ class UserController {
 
     static async updateUser(req, res, next) {
         try {
+            console.log('Received req.params:', req.params); // Debugging log
+            console.log('Received req.body:', req.body); // Debugging log
+
             const { id } = req.params;
             const updates = req.body;
+
+            if (!id) {
+                console.error('Error: User ID is missing in req.params');
+                return res.status(400).json({ error: 'User ID is required to update a user.' });
+            }
+
             const updatedUser = await UserModel.updateUser(id, updates);
             res.status(200).json(updatedUser);
         } catch (error) {
