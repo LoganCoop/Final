@@ -107,12 +107,12 @@ export default {
         },
         async updateUser() {
             try {
-                console.log('Updating user with payload:', this.userForm); // Debugging log
-                // Ensure the payload matches the server's expected format
-                const payload = {
+                const payload = JSON.parse(JSON.stringify({
                     username: this.userForm.username,
                     is_admin: this.userForm.is_admin
-                };
+                })); // Ensure payload is a plain object
+
+                console.log('Updating user with payload:', payload); // Debugging log
                 await updateUser(this.userForm.id, payload);
                 this.isEditingUser = false;
                 this.fetchUsersList();
