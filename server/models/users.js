@@ -62,9 +62,14 @@ class UserModel {
             throw new BadRequestError('User ID is required to update a user.');
         }
 
+        if (!updates.username) {
+            console.error('Error: username is missing in updates');
+            throw new BadRequestError('Username is required to update a user.');
+        }
+
         const { data, error } = await supabase
             .from('users')
-            .update(updates)
+            .update({ username: updates.username })
             .eq('id', userId)
             .select('id, username, is_admin');
 
