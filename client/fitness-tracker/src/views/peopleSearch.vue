@@ -10,7 +10,7 @@
                     <h3>{{ workout.workout || 'No workout name provided' }}</h3>
                     <p><strong>Duration:</strong> {{ workout.duration || 'N/A' }} minutes</p>
                     <p><strong>Distance:</strong> {{ workout.distance || 'N/A' }} km</p>
-                    <p><em>{{ formatDate(workout.date) || 'No date available' }}</em></p>
+                    <p><em>{{ formatDate(workout.created_at) || 'No date available' }}</em></p>
                 </li>
             </ul>
         </div>
