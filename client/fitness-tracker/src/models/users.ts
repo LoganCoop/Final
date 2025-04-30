@@ -61,6 +61,15 @@ export async function deleteUser(userId: number) {
   return response.data;
 }
 
+export async function fetchWorkouts() {
+  try {
+    const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to fetch workouts');
+  }
+}
+
 export function logout() {
   currentUser.value = null;
   localStorage.removeItem('userToken');

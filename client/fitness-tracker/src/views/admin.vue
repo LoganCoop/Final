@@ -107,14 +107,16 @@ export default {
         },
         async updateUser() {
             try {
-                await updateUser(this.userForm.id, {
+                // Ensure the payload matches the server's expected format
+                const payload = {
                     username: this.userForm.username,
                     is_admin: this.userForm.is_admin
-                });
+                };
+                await updateUser(this.userForm.id, payload);
                 this.isEditingUser = false;
                 this.fetchUsersList();
             } catch (error) {
-                alert('Failed to update user: ' + error.message);
+                alert('Failed to update user: ' + (error.response?.data?.error || error.message));
             }
         },
         async updateWorkout() {
