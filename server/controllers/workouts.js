@@ -5,21 +5,18 @@ const router = express.Router();
 
 // Get all workouts for a user (optionally filter by user_id)
 router.get('/', async (req, res) => {
-    const id = req.query.id;
-    let query = supabase.from('u_workouts').select('*');
-    if (id) query = query.eq('id', id);
-    const { data, error } = await query;
+    const { data, error } = await supabase.from('u_workouts').select('*');
     if (error) return res.status(500).json({ error: error.message });
     res.json(data);
 });
 
 // Add a new workout
 router.post('/', async (req, res) => {
-    const { workout, duration, distance, id } = req.body;
-    if (!workout || !duration || !distance || !id) {
+    const { workout, duration, distance } = req.body;
+    if (!workout || !duration || !distance) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-    const { data, error } = await supabase.from('u_workouts').insert([{ workout, duration, distance, id }]).select('*');
+    const { data, error } = await supabase.from('u_workouts').insert([{ workout, duration, distance }]).select('*');
     if (error) return res.status(500).json({ error: error.message });
     res.status(201).json(data[0]);
 });

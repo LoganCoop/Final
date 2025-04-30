@@ -88,14 +88,9 @@ export default {
                 const workoutData = {
                     workout: this.workout,
                     duration: this.duration,
-                    distance: this.distance,
-                    id: userObj['user-id'] || userObj.user_id || userObj.id || this.userId
+                    distance: this.distance
                 };
                 console.log('workoutData', workoutData); // DEBUG: See what is being sent
-                if (!workoutData.id) {
-                    alert('User ID is missing. Please log in again.');
-                    return;
-                }
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                     if (response.data && response.status === 201) {
@@ -128,9 +123,7 @@ export default {
                 userObj = {};
             }
             try {
-                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts', {
-                    params: { id: userObj.id || this.userId }
-                });
+                const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
                 this.workouts = response.data;
             } catch (error) {
                 if (error.response && error.response.status === 404) {
