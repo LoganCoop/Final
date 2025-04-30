@@ -30,9 +30,9 @@ export async function signup(username: string, password: string) {
   }
 }
 
-export async function fetchUsers(userId?: number) {
+export async function fetchUsers(id?: number) {
   try {
-    const user = userId ? { id: userId } : JSON.parse(localStorage.getItem('userToken') || '{}');
+    const user = id ? { id: id } : JSON.parse(localStorage.getItem('userToken') || '{}');
     const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/users', {
       headers: { 'x-user-id': user.id }
     });
@@ -45,17 +45,17 @@ export async function fetchUsers(userId?: number) {
   }
 }
 
-export async function updateUser(userId: number, updates: any) {
+export async function updateUser(id: number, updates: any) {
   const user = JSON.parse(localStorage.getItem('userToken') || '{}');
-  const response = await axios.put(`https://fitness-tracker-shxf.onrender.com/api/users/${userId}`, updates, {
+  const response = await axios.put(`https://fitness-tracker-shxf.onrender.com/api/users/${id}`, updates, {
     headers: { 'x-user-id': user.id }
   });
   return response.data;
 }
 
-export async function deleteUser(userId: number) {
+export async function deleteUser(id: number) {
   const user = JSON.parse(localStorage.getItem('userToken') || '{}');
-  const response = await axios.delete(`https://fitness-tracker-shxf.onrender.com/api/users/${userId}`, {
+  const response = await axios.delete(`https://fitness-tracker-shxf.onrender.com/api/users/${id}`, {
     headers: { 'x-user-id': user.id }
   });
   return response.data;
