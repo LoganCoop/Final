@@ -15,7 +15,7 @@ function handleLogout() {
         <div class="container">
             <div class="navbar-brand">
                 <span class="navbar-item">
-                    <img alt="Fitness Tracker Logo" class="logo" src="@/assets/dumbbell-icon.png" width="30" />
+                    <img alt="Fitness Tracker Logo" class="logo" src="@/assets/logo.png" width="30" />
                 </span>
 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
