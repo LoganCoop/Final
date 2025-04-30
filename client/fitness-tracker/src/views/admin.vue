@@ -177,7 +177,8 @@ export default {
                 alert('Error: User ID is missing. Cannot edit this user.');
                 return;
             }
-            this.userForm = { ...user };
+            this.userForm = { id: user.id, username: user.username, is_admin: user.is_admin };
+            console.log('User form populated:', this.userForm); // Debugging log
             this.isEditingUser = true;
         },
         editWorkout(workout) {
