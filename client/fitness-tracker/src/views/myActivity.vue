@@ -83,14 +83,20 @@ export default {
                 } catch (e) {
                     userObj = {};
                 }
-                // DEBUG: Show the parsed user token
-                console.log('userObj', userObj);
+                // Debug: show userObj and userToken
+                console.log('userToken:', userToken);
+                console.log('userObj:', userObj);
+                if (!userObj.username) {
+                    alert('Username not found. Please log in again.');
+                    return;
+                }
                 const workoutData = {
                     workout: this.workout,
                     duration: this.duration,
-                    distance: this.distance
+                    distance: this.distance,
+                    user_id: userObj.username // Now using username as user_id (text)
                 };
-                console.log('workoutData', workoutData); // DEBUG: See what is being sent
+                console.log('Submitting workout:', workoutData);
                 try {
                     const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                     if (response.data && response.status === 201) {
@@ -116,15 +122,22 @@ export default {
             if (!this.isLoggedIn) return;
             // Always parse userToken as JSON to get the id
             let userToken = localStorage.getItem('userToken');
-            let userObj = {};
+            let userId = null;
             try {
-                userObj = JSON.parse(userToken);
+                userId = JSON.parse(userToken).id;
             } catch (e) {
-                userObj = {};
+                userId = null;
             }
             try {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
-                this.workouts = response.data;
+                // Only show workouts for the logged-in user (using username as user_id)
+                let username = null;
+                try {
+                    username = JSON.parse(userToken).username;
+                } catch (e) {
+                    username = null;
+                }
+                this.workouts = (response.data || []).filter(w => w.user_id === username);
             } catch (error) {
                 if (error.response && error.response.status === 404) {
                     alert('Workout API not found (404). Please check your backend deployment.');

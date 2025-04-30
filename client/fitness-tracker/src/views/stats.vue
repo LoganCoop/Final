@@ -54,15 +54,24 @@ export default {
     async mounted() {
         if (this.isLoggedIn) {
             try {
+                const userToken = localStorage.getItem('userToken');
+                let username = null;
+                if (userToken) {
+                    try {
+                        username = JSON.parse(userToken).username;
+                    } catch (e) {/* eslint-disable-line no-empty */}
+                }
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
-                // Remove calorie stat, use only fields from u_workouts: id, workout, duration, distance, date
-                this.stats = (response.data || []).map(w => ({
-                    id: w.id,
-                    workout: w.workout,
-                    duration: w.duration,
-                    distance: w.distance,
-                    date: w.date
-                }));
+                // Only show stats for the logged-in user (using username as user_id)
+                this.stats = (response.data || [])
+                    .filter(w => w.user_id === username)
+                    .map(w => ({
+                        id: w.id,
+                        workout: w.workout,
+                        duration: w.duration,
+                        distance: w.distance,
+                        date: w.date
+                    }));
             } catch (error) {
                 // Optionally show error
             }

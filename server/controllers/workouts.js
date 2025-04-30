@@ -12,13 +12,23 @@ router.get('/', async (req, res) => {
 
 // Add a new workout
 router.post('/', async (req, res) => {
-    const { workout, duration, distance } = req.body;
-    if (!workout || !duration || !distance) {
-        return res.status(400).json({ error: 'All fields are required' });
+    try {
+        const { workout, duration, distance, user_id } = req.body;
+        console.log('Received workout POST:', req.body); // Debug log
+        if (!workout || !duration || !distance || !user_id) {
+            return res.status(400).json({ error: 'All fields are required, including user_id (username)' });
+        }
+        // Insert with user_id as the username (text/varchar)
+        const { data, error } = await supabase.from('u_workouts').insert([{ workout, duration, distance, user_id }]).select('*');
+        if (error) {
+            console.error('Supabase insert error:', error);
+            return res.status(500).json({ error: error.message });
+        }
+        res.status(201).json(data[0]);
+    } catch (err) {
+        console.error('Unexpected error in POST /api/workouts:', err);
+        res.status(500).json({ error: 'Unexpected server error', details: err.message });
     }
-    const { data, error } = await supabase.from('u_workouts').insert([{ workout, duration, distance }]).select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.status(201).json(data[0]);
 });
 
 // Delete a workout by ID
