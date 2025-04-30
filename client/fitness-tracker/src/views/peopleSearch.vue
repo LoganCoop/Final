@@ -6,11 +6,11 @@
         <div v-if="searchResults.length">
             <h2>Workouts for User: {{ searchQuery }}:</h2>
             <ul>
-                <li v-for="workout in searchResults" :key="workout.user_id">
-                    <h3>{{ workout.workout }}</h3>
-                    <p><strong>Duration:</strong> {{ workout.duration }} minutes</p>
-                    <p><strong>Distance:</strong> {{ workout.distance }} km</p>
-                    <p><em>{{ formatDate(workout.date) }}</em></p>
+                <li v-for="workout in searchResults" :key="workout.id">
+                    <h3>{{ workout.workout || 'No workout name provided' }}</h3>
+                    <p><strong>Duration:</strong> {{ workout.duration || 'N/A' }} minutes</p>
+                    <p><strong>Distance:</strong> {{ workout.distance || 'N/A' }} km</p>
+                    <p><em>{{ formatDate(workout.date) || 'No date available' }}</em></p>
                 </li>
             </ul>
         </div>
