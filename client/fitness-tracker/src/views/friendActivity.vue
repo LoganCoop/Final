@@ -2,10 +2,16 @@
     <div class="friend-activity">
         <h1>Friend Activity</h1>
         <ul>
-            <li v-for="activity in friendActivities" :key="activity.id">
-                <p><strong>{{ activity.user }}</strong> completed a workout:</p>
-                <p>{{ activity.workout }}</p>
-                <p><em>{{ activity.date }}</em></p>
+            <li v-for="activity in friendActivities" :key="activity.id" class="activity-card">
+                <div class="activity-header">
+                    <p><strong>{{ activity.user }}</strong></p>
+                    <p><em>{{ formatDate(activity.date) }}</em></p>
+                </div>
+                <div class="activity-body">
+                    <p><strong>Workout:</strong> {{ activity.workout }}</p>
+                    <p><strong>Duration:</strong> {{ activity.duration }} minutes</p>
+                    <p><strong>Distance:</strong> {{ activity.distance }} km</p>
+                </div>
             </li>
         </ul>
         <div class="add-activity">
@@ -13,6 +19,8 @@
             <form @submit.prevent="addActivity">
                 <input v-model="newActivity.user" type="text" placeholder="Your Name" required>
                 <input v-model="newActivity.workout" type="text" placeholder="Workout Description" required>
+                <input v-model="newActivity.duration" type="number" placeholder="Duration (minutes)" required>
+                <input v-model="newActivity.distance" type="number" placeholder="Distance (km)" required>
                 <input v-model="newActivity.date" type="date" required>
                 <button type="submit">Add Activity</button>
             </form>
@@ -31,6 +39,8 @@ export default {
             newActivity: {
                 user: '',
                 workout: '',
+                duration: '',
+                distance: '',
                 date: ''
             }
         };
@@ -48,10 +58,15 @@ export default {
             try {
                 const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', this.newActivity);
                 this.friendActivities.push(response.data);
-                this.newActivity = { user: '', workout: '', date: '' };
+                this.newActivity = { user: '', workout: '', duration: '', distance: '', date: '' };
             } catch (error) {
                 // Optionally show error
             }
+        },
+        formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
     },
     mounted() {
@@ -62,53 +77,67 @@ export default {
 
 <style scoped>
 .friend-activity {
-    padding: 20px;
-    background-color: #f0f8ff;
-    border-radius: 10px;
+    padding: 32px 10vw;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
 }
 
 .friend-activity h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
+    font-size: 2.2em;
+    margin-bottom: 32px;
+    color: #2d3a4b;
+    font-weight: 700;
     text-align: center;
 }
 
 .friend-activity ul {
     list-style-type: none;
     padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.friend-activity li {
-    background: #ffffff;
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.activity-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #e3e3e3;
+    transition: transform 0.15s;
 }
 
-.friend-activity p {
-    margin: 5px 0;
+.activity-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(44, 62, 80, 0.13);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.activity-header p {
+    margin: 0;
+    font-weight: 600;
+    color: #2d3a4b;
+}
+
+.activity-body p {
+    margin: 4px 0;
     color: #555;
 }
 
-.friend-activity p strong {
-    color: #000;
-}
-
-.friend-activity p em {
-    color: #888;
-}
-
 .add-activity {
-    margin-top: 30px;
+    margin-top: 40px;
+    text-align: center;
 }
 
 .add-activity h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
-    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #2d3a4b;
 }
 
 .add-activity form {
@@ -118,21 +147,24 @@ export default {
 }
 
 .add-activity input {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
+    font-size: 1em;
 }
 
 .add-activity button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #007bff;
-    color: #fff;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
 .add-activity button:hover {
