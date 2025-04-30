@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h1>Search Workouts by Username</h1>
-        <input v-model="searchQuery" placeholder="Enter username..." />
+        <h1>Search People</h1>
+        <input v-model="searchQuery" placeholder="Enter user ID..." />
         <button @click="searchWorkouts">Search</button>
         <div v-if="searchResults.length">
-            <h2>Workouts for {{ searchQuery }}:</h2>
+            <h2>Workouts for User: {{ searchQuery }}:</h2>
             <ul>
-                <li v-for="workout in searchResults" :key="workout.id">
+                <li v-for="workout in searchResults" :key="workout.user_id">
                     <h3>{{ workout.workout }}</h3>
                     <p><strong>Duration:</strong> {{ workout.duration }} minutes</p>
                     <p><strong>Distance:</strong> {{ workout.distance }} km</p>
@@ -15,7 +15,7 @@
             </ul>
         </div>
         <div v-else-if="searchQuery">
-            <p>No workouts found for username: {{ searchQuery }}</p>
+            <p>No workouts found for user: {{ searchQuery }}</p>
         </div>
     </div>
 </template>
@@ -34,23 +34,17 @@ export default {
     methods: {
         async searchWorkouts() {
             if (!this.searchQuery.trim()) {
-                alert('Please enter a username to search.');
+                alert('Please enter a user ID to search.');
                 return;
             }
             try {
-                // Fetch user by username
-                const userResponse = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/users?username=${this.searchQuery}`);
-                const user = userResponse.data;
+                // Fetch workouts directly by user_id
+                const response = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/u_workouts?user_id=${this.searchQuery}`);
+                this.searchResults = response.data;
 
-                if (!user || !user.id) {
-                    this.searchResults = [];
-                    alert(`No user found with username: ${this.searchQuery}`);
-                    return;
+                if (!this.searchResults.length) {
+                    alert(`No workouts found for user ID: ${this.searchQuery}`);
                 }
-
-                // Fetch workouts for the found user
-                const workoutsResponse = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/u_workouts?user_id=${user.id}`);
-                this.searchResults = workoutsResponse.data;
             } catch (error) {
                 alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
             }
