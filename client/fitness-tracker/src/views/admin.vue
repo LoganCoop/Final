@@ -172,6 +172,11 @@ export default {
         },
         editUser(user) {
             console.log('Editing user:', user); // Debugging log
+            if (!user.id) {
+                console.error('User ID is missing:', user); // Debugging log
+                alert('Error: User ID is missing. Cannot edit this user.');
+                return;
+            }
             this.userForm = { ...user };
             this.isEditingUser = true;
         },
