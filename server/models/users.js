@@ -67,6 +67,7 @@ class UserModel {
             throw new BadRequestError('Username is required to update a user.');
         }
 
+        // Explicitly specify the fields to update
         const { data, error } = await supabase
             .from('users')
             .update({ username: updates.username })
