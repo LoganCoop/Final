@@ -38,8 +38,7 @@ export default {
                 return;
             }
             try {
-                // Fetch workouts directly by user_id
-                const response = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/u_workouts?user_id=${this.searchQuery}`);
+                const response = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/workouts?user_id=${this.searchQuery}`);
                 this.searchResults = response.data;
 
                 if (!this.searchResults.length) {
