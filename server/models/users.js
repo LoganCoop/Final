@@ -3,14 +3,14 @@ import { BadRequestError, NotFoundError, ForbiddenError } from './errors.js';
 
 class UserModel {
     static async createUser(userData) {
-        const { email, password, ...rest } = userData;
+        const {password, username, ...rest } = userData;
 
-        if (!email || !password) {
-            throw new BadRequestError('Email and password are required.');
+        if (!username || !password) {
+            throw new BadRequestError('Username and password are required.');
         }
 
         const { data, error } = await supabase.auth.signUp({
-            email,
+            username,
             password,
         });
 
@@ -57,16 +57,27 @@ class UserModel {
         console.log('Received userId:', userId); // Debugging log
         console.log('Received updates:', updates); // Debugging log
 
+        if (!userId) {
+            console.error('Error: userId is missing');
+            throw new BadRequestError('User ID is required to update a user.');
+        }
+
         const { data, error } = await supabase
             .from('users')
             .update(updates)
             .eq('id', userId)
             .select('id, username, is_admin');
 
-        if (error || !data.length) {
-            console.error('Error updating user in database:', error); // Debugging log
+        if (error) {
+            console.error('Supabase error:', error); // Debugging log
+            throw new Error('Database error: ' + error.message);
+        }
+
+        if (!data.length) {
+            console.error('No user found with the provided ID:', userId); // Debugging log
             throw new NotFoundError('Failed to update user or user not found.');
         }
+
         return data[0];
     }
 
