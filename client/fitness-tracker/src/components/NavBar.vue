@@ -57,7 +57,7 @@ function handleLogout() {
                         <span class="icon">
                             <i class="fas fa-search"></i>
                         </span>
-                        <span>People Search</span>
+                        <span>Search</span>
                     </RouterLink>
                     <RouterLink to="/admin" class="navbar-item">
                         <span class="icon">

@@ -1,62 +1,64 @@
 <template>
-    <div v-if="isLoggedIn">
-        <h1>People Search</h1>
-        <input v-model="searchQuery" placeholder="Search for users..." />
-        <button @click="searchUsers">Search</button>
+    <div>
+        <h1>Search Workouts by Username</h1>
+        <input v-model="searchQuery" placeholder="Enter username..." />
+        <button @click="searchWorkouts">Search</button>
         <div v-if="searchResults.length">
-            <h2>Search Results:</h2>
+            <h2>Workouts for {{ searchQuery }}:</h2>
             <ul>
-                <li v-for="user in searchResults" :key="user.id">
-                    <h3>{{ user.name }}</h3>
-                    <p>{{ user.stats }}</p>
+                <li v-for="workout in searchResults" :key="workout.id">
+                    <h3>{{ workout.workout }}</h3>
+                    <p><strong>Duration:</strong> {{ workout.duration }} minutes</p>
+                    <p><strong>Distance:</strong> {{ workout.distance }} km</p>
+                    <p><em>{{ formatDate(workout.date) }}</em></p>
                 </li>
             </ul>
         </div>
-        <div v-else>
-            <p>No results found.</p>
+        <div v-else-if="searchQuery">
+            <p>No workouts found for username: {{ searchQuery }}</p>
         </div>
-    </div>
-    <div v-else>
-        <p>Please log in to access the people search.</p>
     </div>
 </template>
 
 <script>
-import { fetchUsers } from '@/models/users';
+import axios from 'axios';
 
 export default {
     name: 'PeopleSearch',
     data() {
         return {
-            isLoggedIn: false,
             searchQuery: '',
-            searchResults: [],
-            allUsers: []
+            searchResults: []
         };
     },
     methods: {
-        async searchUsers() {
-            if (!this.allUsers.length) {
-                try {
-                    this.allUsers = await fetchUsers();
-                } catch (error) {
-                    alert('Failed to fetch users: ' + error.message);
+        async searchWorkouts() {
+            if (!this.searchQuery.trim()) {
+                alert('Please enter a username to search.');
+                return;
+            }
+            try {
+                // Fetch user by username
+                const userResponse = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/users?username=${this.searchQuery}`);
+                const user = userResponse.data;
+
+                if (!user || !user.id) {
+                    this.searchResults = [];
+                    alert(`No user found with username: ${this.searchQuery}`);
                     return;
                 }
-            }
-            this.searchResults = this.allUsers.filter(user =>
-                user.username && user.username.toLowerCase().includes(this.searchQuery.toLowerCase())
-            );
-        }
-    },
-    async created() {
-        this.isLoggedIn = !!localStorage.getItem('userToken');
-        if (this.isLoggedIn) {
-            try {
-                this.allUsers = await fetchUsers();
+
+                // Fetch workouts for the found user
+                const workoutsResponse = await axios.get(`https://fitness-tracker-shxf.onrender.com/api/u_workouts?user_id=${user.id}`);
+                this.searchResults = workoutsResponse.data;
             } catch (error) {
-                // Ignore error for now
+                alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
             }
+        },
+        formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
     }
 };
