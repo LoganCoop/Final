@@ -110,7 +110,7 @@ export default {
                 const payload = JSON.parse(JSON.stringify({
                     username: this.userForm.username,
                     is_admin: this.userForm.is_admin
-                })); // Ensure payload is a plain object
+                })); 
 
                 console.log('Updating user with payload:', payload); // Debugging log
                 await updateUser(this.userForm.id, payload);
