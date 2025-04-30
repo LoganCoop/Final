@@ -13,11 +13,6 @@
         <h2>Time Exercising</h2>
         <p class="stat-value">{{ timeExercising }} hours</p>
       </div>
-      
-      <div class="stat-card">
-        <h2>Calories Burnt</h2>
-        <p class="stat-value">{{ caloriesBurnt }} kcal</p>
-      </div>
     </div>
   </div>
 </template>
@@ -31,7 +26,6 @@ export default {
     return {
       weeklyDistance: 0,
       timeExercising: 0,
-      caloriesBurnt: 0,
       isLoggedIn: false,
       userId: null
     };
@@ -78,16 +72,13 @@ export default {
         this.weeklyDistance = userWorkouts.reduce((sum, w) => sum + (Number(w.distance) || 0), 0);
         const totalMinutes = userWorkouts.reduce((sum, w) => sum + (Number(w.duration) || 0), 0);
         this.timeExercising = (totalMinutes / 60).toFixed(1);
-        this.caloriesBurnt = (totalMinutes * 5).toFixed(0); // Estimate: 5 kcal/min
       } catch (e) {
         this.weeklyDistance = 0;
         this.timeExercising = 0;
-        this.caloriesBurnt = 0;
       }
     } else {
       this.weeklyDistance = 0;
       this.timeExercising = 0;
-      this.caloriesBurnt = 0;
     }
   }
 };
