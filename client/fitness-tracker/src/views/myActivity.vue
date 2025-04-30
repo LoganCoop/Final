@@ -26,7 +26,10 @@
                             <p>{{ workout.duration }} minutes</p>
                             <p>{{ workout.distance }} km</p>
                         </div>
-                        <span>{{ new Date().toLocaleDateString() }}</span>
+                        <div class="workout-actions">
+                            <button @click="editWorkout(index)" class="button is-small is-info">Edit</button>
+                            <button @click="deleteWorkout(index)" class="button is-small is-danger">Delete</button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -51,7 +54,8 @@ export default {
             workout: '',
             duration: '',
             distance: '',
-            workouts: []
+            workouts: [],
+            editIndex: null // Track the index of the workout being edited
         };
     },
     computed: {
@@ -74,49 +78,73 @@ export default {
     },
     methods: {
         async addWorkout() {
-            if (this.isLoggedIn) {
-                // Always parse userToken as JSON to get the id
-                let userToken = localStorage.getItem('userToken');
-                let userObj = {};
-                try {
-                    userObj = JSON.parse(userToken);
-                } catch (e) {
-                    userObj = {};
-                }
-                // Debug: show userObj and userToken
-                console.log('userToken:', userToken);
-                console.log('userObj:', userObj);
-                if (!userObj.username) {
-                    alert('Username not found. Please log in again.');
-                    return;
-                }
-                const workoutData = {
+            if (this.editIndex !== null) {
+                // Update existing workout
+                this.workouts[this.editIndex] = {
                     workout: this.workout,
                     duration: this.duration,
-                    distance: this.distance,
-                    user_id: userObj.username // Now using username as user_id (text)
+                    distance: this.distance
                 };
-                console.log('Submitting workout:', workoutData);
-                try {
-                    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
-                    if (response.data && response.status === 201) {
-                        this.workouts.push(response.data);
-                    } else {
-                        alert('Workout not created. Please try again.');
-                    }
-                    this.workout = '';
-                    this.duration = '';
-                    this.distance = '';
-                } catch (error) {
-                    if (error.response && error.response.status === 404) {
-                        alert('Workout API not found (404). Please check your backend deployment.');
-                    } else {
-                        alert('Error adding workout: ' + (error.response?.data?.error || error.message));
-                    }
-                }
+                this.editIndex = null;
             } else {
-                alert('User is not logged in.');
+                // Add new workout
+                if (this.isLoggedIn) {
+                    // Always parse userToken as JSON to get the id
+                    let userToken = localStorage.getItem('userToken');
+                    let userObj = {};
+                    try {
+                        userObj = JSON.parse(userToken);
+                    } catch (e) {
+                        userObj = {};
+                    }
+                    // Debug: show userObj and userToken
+                    console.log('userToken:', userToken);
+                    console.log('userObj:', userObj);
+                    if (!userObj.username) {
+                        alert('Username not found. Please log in again.');
+                        return;
+                    }
+                    const workoutData = {
+                        workout: this.workout,
+                        duration: this.duration,
+                        distance: this.distance,
+                        user_id: userObj.username // Now using username as user_id (text)
+                    };
+                    console.log('Submitting workout:', workoutData);
+                    try {
+                        const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
+                        if (response.data && response.status === 201) {
+                            this.workouts.push(response.data);
+                        } else {
+                            alert('Workout not created. Please try again.');
+                        }
+                        this.workout = '';
+                        this.duration = '';
+                        this.distance = '';
+                    } catch (error) {
+                        if (error.response && error.response.status === 404) {
+                            alert('Workout API not found (404). Please check your backend deployment.');
+                        } else {
+                            alert('Error adding workout: ' + (error.response?.data?.error || error.message));
+                        }
+                    }
+                } else {
+                    alert('User is not logged in.');
+                }
             }
+            this.workout = '';
+            this.duration = '';
+            this.distance = '';
+        },
+        editWorkout(index) {
+            const workout = this.workouts[index];
+            this.workout = workout.workout;
+            this.duration = workout.duration;
+            this.distance = workout.distance;
+            this.editIndex = index;
+        },
+        deleteWorkout(index) {
+            this.workouts.splice(index, 1);
         },
         async fetchWorkouts() {
             if (!this.isLoggedIn) return;
@@ -189,6 +217,7 @@ export default {
     color: #2d3a4b;
     font-weight: 700;
     letter-spacing: 1px;
+    text-align: center;
 }
 
 form {
@@ -198,12 +227,16 @@ form {
     padding: 28px 24px 20px 24px;
     margin-bottom: 32px;
     border: 1px solid #e3e3e3;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 form label {
     font-weight: 600;
     color: #2d3a4b;
     margin-bottom: 8px;
+    display: block;
 }
 
 form input {
@@ -212,6 +245,7 @@ form input {
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 100%;
+    font-size: 1em;
 }
 
 form button {
@@ -223,10 +257,17 @@ form button {
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.2s;
+    width: 100%;
+    font-size: 1.1em;
 }
 
 form button:hover {
     background-color: #0056b3;
+}
+
+.workout-list {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .workout-list ul {
@@ -286,5 +327,10 @@ form button:hover {
     font-size: 2em;
     color: #ffc107;
     margin-right: 12px;
+}
+
+.workout-actions {
+    display: flex;
+    gap: 8px;
 }
 </style>
