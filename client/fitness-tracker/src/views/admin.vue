@@ -107,12 +107,20 @@ export default {
         },
         async updateUser() {
             try {
+                if (!this.userForm.id) {
+                    console.error('Error: User ID is missing in userForm:', this.userForm); // Debugging log
+                    alert('Error: User ID is missing. Cannot update this user.');
+                    return;
+                }
+
                 const payload = JSON.parse(JSON.stringify({
                     username: this.userForm.username,
                     is_admin: this.userForm.is_admin
-                })); 
+                })); // Ensure payload is a plain object
 
-                console.log('Updating user with payload:', payload); // Debugging log
+                console.log('Updating user with ID:', this.userForm.id); // Debugging log
+                console.log('Payload:', payload); // Debugging log
+
                 await updateUser(this.userForm.id, payload);
                 this.isEditingUser = false;
                 this.fetchUsersList();
