@@ -4,8 +4,8 @@
         <ul>
             <li v-for="activity in friendActivities" :key="activity.id" class="activity-card">
                 <div class="activity-header">
-                    <p><strong>{{ activity.user }}</strong></p>
-                    <p><em>{{ formatDate(activity.date) }}</em></p>
+                    <p><strong>{{ activity.user_id }}</strong></p>
+                    <p><em>{{ formatDate(activity.created_at) }}</em></p>
                 </div>
                 <div class="activity-body">
                     <p><strong>Workout:</strong> {{ activity.workout }}</p>
