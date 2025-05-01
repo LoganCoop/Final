@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { currentUser, logout } from '@/models/users'
+import { ref, computed } from 'vue';
+import { currentUser, logout, login } from '@/models/users';
 
-const isActive = ref(false)
-const username = computed(() => currentUser.value?.username)
+const isActive = ref(false);
+const username = computed(() => currentUser.value?.username);
 
 function handleLogout() {
-  logout()
+  logout();
+}
+
+async function loginAsExample(username: string, password: string): Promise<void> {
+  try {
+    await login(username, password);
+    window.location.reload(); // Refresh to simulate login
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      alert('Failed to log in as ' + username + ': ' + error.message);
+    } else {
+      alert('An unknown error occurred while logging in as ' + username);
+    }
+  }
 }
 </script>
 
@@ -73,15 +86,11 @@ function handleLogout() {
                             <RouterLink to="/sign-up" class="button is-primary">
                                 <strong>Sign up</strong>
                             </RouterLink>
-                            <!-- Remove username and logout from here -->
                             <div class="dropdown is-hoverable">
                                 <div class="dropdown-trigger">
                                     <button class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
                                         <span v-if="username"><i class="fas fa-user"></i> {{ username }}</span>
                                         <span v-else>Log in</span>
-                                        <span class="icon is-small">
-                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                        </span>
                                     </button>
                                 </div>
                                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
@@ -89,6 +98,12 @@ function handleLogout() {
                                         <RouterLink v-if="!username" to="/login" class="dropdown-item">
                                             Log in
                                         </RouterLink>
+                                        <button v-if="!username" class="dropdown-item" @click="loginAsExample('Logan', 'PC')">
+                                            Log in as Logan
+                                        </button>
+                                        <button v-if="!username" class="dropdown-item" @click="loginAsExample('Ross', 'PC')">
+                                            Log in as Ross
+                                        </button>
                                         <div v-else class="dropdown-item" style="display: flex; align-items: center;">
                                             <i class="fas fa-user" style="margin-right: 0.5em;"></i> {{ username }}
                                         </div>
