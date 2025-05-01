@@ -101,7 +101,7 @@ async function loginAsExample(username: string, password: string): Promise<void>
                                         <button v-if="!username" class="dropdown-item" @click="loginAsExample('Logan', 'PC')">
                                             Log in as Logan
                                         </button>
-                                        <button v-if="!username" class="dropdown-item" @click="loginAsExample('Ross', 'PC')">
+                                        <button v-if="!username" class="dropdown-item" @click="loginAsExample('Ross', 'DC')">
                                             Log in as Ross
                                         </button>
                                         <div v-else class="dropdown-item" style="display: flex; align-items: center;">
