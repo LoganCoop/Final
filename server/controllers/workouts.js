@@ -39,4 +39,38 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json({ message: 'Workout deleted' });
 });
 
+// Update a workout by ID
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { workout, duration, distance } = req.body;
+
+        console.log('Received workout PUT:', req.body); // Debugging log
+
+        if (!workout || !duration || !distance) {
+            return res.status(400).json({ error: 'All fields (workout, duration, distance) are required.' });
+        }
+
+        const { data, error } = await supabase
+            .from('u_workouts')
+            .update({ workout, duration, distance })
+            .eq('id', id)
+            .select('*');
+
+        if (error) {
+            console.error('Supabase update error:', error); // Debugging log
+            return res.status(500).json({ error: error.message });
+        }
+
+        if (!data.length) {
+            return res.status(404).json({ error: 'Workout not found.' });
+        }
+
+        res.status(200).json(data[0]);
+    } catch (err) {
+        console.error('Unexpected error in PUT /api/workouts/:id:', err); // Debugging log
+        res.status(500).json({ error: 'Unexpected server error', details: err.message });
+    }
+});
+
 export default router;
