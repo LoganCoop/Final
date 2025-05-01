@@ -110,3 +110,15 @@ export async function addWorkout(newWorkout: { workout: string; duration: number
     throw new Error(error.response?.data?.error || 'Failed to add workout');
   }
 }
+
+export async function deleteWorkout(workoutId: number) {
+  try {
+    const user = JSON.parse(localStorage.getItem('userToken') || '{}');
+    const response = await axios.delete(`https://fitness-tracker-shxf.onrender.com/api/workouts/${workoutId}`, {
+      headers: { 'x-user-id': user.id }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to delete workout');
+  }
+}
