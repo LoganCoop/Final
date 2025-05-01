@@ -199,90 +199,109 @@ export default {
 
 <style scoped>
 .admin-view {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
+    padding: 32px 10vw;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
 }
 
-h1, h2 {
-    color: #444;
+.admin-view h1 {
+    font-size: 2.5em;
+    margin-bottom: 32px;
+    color: #2d3a4b;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 20px;
 }
 
-.user-list, .user-add, .user-edit, .workout-list, .workout-add, .workout-edit {
-    margin-bottom: 30px;
+.user-list, .workout-list {
+    margin-bottom: 40px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+    padding: 24px;
+    border: 1px solid #e3e3e3;
+}
+
+.user-list h2, .workout-list h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #2d3a4b;
+    font-weight: 600;
 }
 
 .user-list ul, .workout-list ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 }
 
 .user-list li, .workout-list li {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.3s;
+    transition: transform 0.15s;
+    border: 1px solid #ddd;
 }
 
 .user-list li:hover, .workout-list li:hover {
-    background-color: #f1f1f1;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(44, 62, 80, 0.12);
 }
 
-.user-list button, .workout-list button {
-    margin-left: 10px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+button {
+    padding: 8px 16px;
     background-color: #007bff;
-    color: #fff;
-    transition: background-color 0.3s;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
-.user-list button:hover, .workout-list button:hover {
+button:hover {
     background-color: #0056b3;
 }
 
-.user-add, .user-edit, .workout-add, .workout-edit {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+button.is-danger {
+    background-color: #dc3545;
 }
 
-.user-add form, .user-edit form, .workout-add form, .workout-edit form {
-    display: flex;
-    flex-direction: column;
+button.is-danger:hover {
+    background-color: #a71d2a;
 }
 
-.user-add input, .user-edit input, .workout-add input, .workout-edit input {
-    margin-bottom: 15px;
-    padding: 12px;
+.user-edit, .workout-edit {
+    margin-top: 40px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+    padding: 24px;
+    border: 1px solid #e3e3e3;
+}
+
+.user-edit h2, .workout-edit h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #2d3a4b;
+    font-weight: 600;
+}
+
+form input {
+    margin-bottom: 16px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1em;
 }
 
-.user-add button, .user-edit button, .workout-add button, .workout-edit button {
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #28a745;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.user-add button:hover, .user-edit button:hover, .workout-add button:hover, .workout-edit button:hover {
-    background-color: #218838;
+form label {
+    font-weight: 600;
+    color: #2d3a4b;
+    margin-bottom: 8px;
+    display: block;
 }
 </style>
