@@ -55,8 +55,8 @@ export default {
         endOfWeek.setDate(startOfWeek.getDate() + 7);
 
         const userWorkouts = workouts.filter(w => {
-          if (w.user_id && this.userId) {
-            if (w.user_id !== this.userId) return false;
+          if (w.user_id && this.username) {
+            if (w.user_id !== this.username) return false;
           }
           const workoutDate = w.date ? new Date(w.date) : null;
           if (!workoutDate) return false;
