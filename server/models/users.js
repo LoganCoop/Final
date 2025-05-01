@@ -70,7 +70,7 @@ class UserModel {
         // Explicitly specify the fields to update
         const { data, error } = await supabase
             .from('users')
-            .update({ username: updates.username })
+            .update({ username: updates.username }) // Only update the username field
             .eq('id', userId)
             .select('id, username, is_admin');
 
