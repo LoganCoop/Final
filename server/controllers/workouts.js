@@ -33,10 +33,30 @@ router.post('/', async (req, res) => {
 
 // Delete a workout by ID
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { error } = await supabase.from('u_workouts').delete().eq('user_id', user_id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.status(200).json({ message: 'Workout deleted' });
+    try {
+        const { id } = req.params;
+
+        console.log('Deleting workout with ID:', id); // Debugging log
+
+        if (!id) {
+            return res.status(400).json({ error: 'Workout ID is required.' });
+        }
+
+        const { error } = await supabase
+            .from('u_workouts')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error('Supabase delete error:', error); // Debugging log
+            return res.status(500).json({ error: error.message });
+        }
+
+        res.status(200).json({ message: 'Workout deleted successfully.' });
+    } catch (err) {
+        console.error('Unexpected error in DELETE /api/workouts/:id:', err); // Debugging log
+        res.status(500).json({ error: 'Unexpected server error', details: err.message });
+    }
 });
 
 // Update a workout by ID
