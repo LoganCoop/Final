@@ -98,3 +98,15 @@ export async function updateWorkout(workoutId: number, updates: { workout: strin
     throw new Error(error.response?.data?.error || 'Failed to update workout');
   }
 }
+
+export async function addWorkout(newWorkout: { workout: string; duration: number; distance: number }) {
+  try {
+    const user = JSON.parse(localStorage.getItem('userToken') || '{}');
+    const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', newWorkout, {
+      headers: { 'x-user-id': user.id }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to add workout');
+  }
+}
