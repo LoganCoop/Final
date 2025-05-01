@@ -11,7 +11,6 @@
         <!-- Users Table -->
         <div class="user-list">
             <h2>Users</h2>
-            <button @click="addUser">Add User</button>
             <ul>
                 <li v-for="user in users" :key="user.id">
                     {{ user.username }} <span v-if="user.is_admin">(admin)</span>
@@ -24,7 +23,6 @@
         <!-- Workouts Table -->
         <div class="workout-list">
             <h2>Workouts</h2>
-            <button @click="addWorkout">Add Workout</button>
             <ul>
                 <li v-for="workout in workouts" :key="workout.id">
                     {{ workout.workout }} - {{ workout.duration }} min - {{ workout.distance }} km
@@ -60,7 +58,7 @@
 </template>
 
 <script>
-import { fetchUsers, updateUser, deleteUser, addUser, fetchWorkouts, updateWorkout, deleteWorkout, addWorkout, currentUser } from '@/models/users';
+import { fetchUsers, updateUser, deleteUser, fetchWorkouts, updateWorkout, deleteWorkout, currentUser } from '@/models/users';
 
 export default {
     name: 'AdminPanel',
@@ -159,24 +157,6 @@ export default {
                 this.fetchWorkoutsList();
             } catch (error) {
                 alert('Failed to delete workout: ' + error.message);
-            }
-        },
-        async addUser() {
-            try {
-                const newUser = { username: 'New User', is_admin: false };
-                await addUser(newUser);
-                this.fetchUsersList();
-            } catch (error) {
-                alert('Failed to add user: ' + error.message);
-            }
-        },
-        async addWorkout() {
-            try {
-                const newWorkout = { workout: 'New Workout', duration: 30, distance: 5 };
-                await addWorkout(newWorkout);
-                this.fetchWorkoutsList();
-            } catch (error) {
-                alert('Failed to add workout: ' + error.message);
             }
         },
         editUser(user) {
