@@ -84,7 +84,7 @@ export default {
                 this.editIndex = null;
             } else {
                 if (this.isLoggedIn) {
-                    let userToken = localStorage.getItem('userToken');
+                    let userToken = localStorage.getItem('userToken'); 
                     let userObj = {};
                     try {
                         userObj = JSON.parse(userToken);
