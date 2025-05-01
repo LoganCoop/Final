@@ -12,7 +12,7 @@ function handleLogout() {
 async function loginAsExample(username: string, password: string): Promise<void> {
   try {
     await login(username, password);
-    window.location.reload(); // Refresh to simulate login
+    window.location.reload(); 
   } catch (error: unknown) {
     if (error instanceof Error) {
       alert('Failed to log in as ' + username + ': ' + error.message);

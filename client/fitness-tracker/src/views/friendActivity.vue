@@ -40,7 +40,7 @@ export default {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
                 this.friendActivities = response.data;
             } catch (error) {
-                // Optionally show error
+                console.error('Error fetching activities:', error); // Added error handling
             }
         },
         async addActivity() {
@@ -49,7 +49,7 @@ export default {
                 this.friendActivities.push(response.data);
                 this.newActivity = { user: '', workout: '', duration: '', distance: '', date: '' };
             } catch (error) {
-                // Optionally show error
+                console.error('Error adding activity:', error); // Added error handling
             }
         },
         formatDate(date) {

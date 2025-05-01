@@ -45,10 +45,10 @@ class UserController {
 
     static async updateUser(req, res, next) {
         try {
-            console.log('Received req.params:', req.params); // Debugging log
-            console.log('Received req.body:', req.body); // Debugging log
+            console.log('Received req.params:', req.params); 
+            console.log('Received req.body:', req.body); 
 
-            const { userId } = req.params; // Updated to use userId
+            const { userId } = req.params; 
             const updates = req.body;
 
             if (!userId) {

@@ -1,6 +1,4 @@
-// Custom error classes for the Fitness Tracker project
 
-// Base error class
 class AppError extends Error {
     constructor(message, statusCode) {
         super(message);
@@ -10,8 +8,6 @@ class AppError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-
-// Specific error classes
 class BadRequestError extends AppError {
     constructor(message = 'Bad Request') {
         super(message, 400);

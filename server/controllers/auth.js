@@ -4,7 +4,6 @@ import supabase from '../models/supabase.js';
 
 const router = express.Router();
 
-// Endpoint to create a new user
 router.post('/signup', async (req, res) => {
     const { username, password } = req.body;
 
@@ -29,7 +28,6 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// Endpoint to authenticate a user
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 

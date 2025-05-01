@@ -54,8 +54,8 @@ class UserModel {
     }
 
     static async updateUser(userId, updates) {
-        console.log('Received userId:', userId); // Debugging log
-        console.log('Received updates:', updates); // Debugging log
+        console.log('Received userId:', userId); 
+        console.log('Received updates:', updates);
 
         if (!userId) {
             console.error('Error: userId is missing');
@@ -67,20 +67,19 @@ class UserModel {
             throw new BadRequestError('Username is required to update a user.');
         }
 
-        // Explicitly specify the fields to update
         const { data, error } = await supabase
             .from('users')
-            .update({ username: updates.username }) // Only update the username field
+            .update({ username: updates.username }) 
             .eq('id', userId)
             .select('id, username, is_admin');
 
         if (error) {
-            console.error('Supabase error:', error); // Debugging log
+            console.error('Supabase error:', error); 
             throw new Error('Database error: ' + error.message);
         }
 
         if (!data.length) {
-            console.error('No user found with the provided ID:', userId); // Debugging log
+            console.error('No user found with the provided ID:', userId); 
             throw new NotFoundError('Failed to update user or user not found.');
         }
 

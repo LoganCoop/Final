@@ -31,7 +31,6 @@ export default {
     };
   },
   async mounted() {
-    // Check login
     let userObj = {};
     const userToken = localStorage.getItem('userToken');
     if (userToken) {
@@ -48,27 +47,22 @@ export default {
       try {
         const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
         const workouts = response.data || [];
-        // Get current week range
         const now = new Date();
         const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+        startOfWeek.setDate(now.getDate() - now.getDay()); 
         startOfWeek.setHours(0,0,0,0);
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 7);
 
-        // Filter for this user and this week
         const userWorkouts = workouts.filter(w => {
-          // If userId is present in workout, filter by it; else, show all
           if (w.user_id && this.userId) {
             if (w.user_id !== this.userId) return false;
           }
-          // Parse date
           const workoutDate = w.date ? new Date(w.date) : null;
           if (!workoutDate) return false;
           return workoutDate >= startOfWeek && workoutDate < endOfWeek;
         });
 
-        // Calculate totals
         this.weeklyDistance = userWorkouts.reduce((sum, w) => sum + (Number(w.distance) || 0), 0);
         const totalMinutes = userWorkouts.reduce((sum, w) => sum + (Number(w.duration) || 0), 0);
         this.timeExercising = (totalMinutes / 60).toFixed(1);

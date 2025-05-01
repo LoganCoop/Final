@@ -55,16 +55,14 @@ export default {
             duration: '',
             distance: '',
             workouts: [],
-            editIndex: null // Track the index of the workout being edited
+            editIndex: null 
         };
     },
     computed: {
         isLoggedIn() {
-            // Only check for the presence of a userToken in localStorage
             return Boolean(localStorage.getItem('userToken'));
         },
         userId() {
-            // Always parse userToken as JSON to get the id
             let userToken = localStorage.getItem('userToken');
             let userObj = {};
             try {
@@ -72,14 +70,12 @@ export default {
             } catch (e) {
                 userObj = {};
             }
-            // Use id for user id
             return userObj.id || null;
         }
     },
     methods: {
         async addWorkout() {
             if (this.editIndex !== null) {
-                // Update existing workout
                 this.workouts[this.editIndex] = {
                     workout: this.workout,
                     duration: this.duration,
@@ -87,9 +83,7 @@ export default {
                 };
                 this.editIndex = null;
             } else {
-                // Add new workout
                 if (this.isLoggedIn) {
-                    // Always parse userToken as JSON to get the id
                     let userToken = localStorage.getItem('userToken');
                     let userObj = {};
                     try {
@@ -97,7 +91,6 @@ export default {
                     } catch (e) {
                         userObj = {};
                     }
-                    // Debug: show userObj and userToken
                     console.log('userToken:', userToken);
                     console.log('userObj:', userObj);
                     if (!userObj.username) {
@@ -108,7 +101,7 @@ export default {
                         workout: this.workout,
                         duration: this.duration,
                         distance: this.distance,
-                        user_id: userObj.username // Now using username as user_id (text)
+                        user_id: userObj.username
                     };
                     console.log('Submitting workout:', workoutData);
                     try {
@@ -148,7 +141,6 @@ export default {
         },
         async fetchWorkouts() {
             if (!this.isLoggedIn) return;
-            // Always parse userToken as JSON to get the id
             let userToken = localStorage.getItem('userToken');
             let userId = null;
             try {
@@ -158,7 +150,6 @@ export default {
             }
             try {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
-                // Only show workouts for the logged-in user (using username as user_id)
                 let username = null;
                 try {
                     username = JSON.parse(userToken).username;
@@ -176,7 +167,6 @@ export default {
         }
     },
     mounted() {
-        // Always fetch workouts on mount if logged in
         this.$watch(
             () => currentUser.value && currentUser.value.id,
             (newVal) => {
