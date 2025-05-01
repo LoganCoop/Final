@@ -116,7 +116,7 @@ export default {
                 const payload = JSON.parse(JSON.stringify({
                     username: this.userForm.username,
                     is_admin: this.userForm.is_admin,
-                    update_at: new Date().toISOString()
+                    updated_at: new Date().toISOString()
                 })); // Ensure payload is a plain object
 
                 console.log('Updating user with ID:', this.userForm.id); // Debugging log
