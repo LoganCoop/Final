@@ -5,19 +5,32 @@
             <form @submit.prevent="addWorkout">
                 <div>
                     <label for="workout">Workout:</label>
-                    <v-autocomplete
-                        v-model="workout"
-                        :items="workoutSuggestions"
-                        label="Workout"
-                        required
-                        :filter="(item, queryText) => item.toLowerCase().includes(queryText.toLowerCase())"
-                        :allow-new="true"
-                        clearable
-                        placeholder="Enter or select a workout"
-                        @update:model-value="onWorkoutInput"
-                        @blur="onWorkoutBlur"
-                        v-model:search-input="workout"
-                    ></v-autocomplete>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input
+                            type="text"
+                            v-model="workout"
+                            id="workout"
+                            placeholder="Enter a workout"
+                            required
+                            style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
+                        />
+                        <v-menu offset-y>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn icon v-bind="attrs" v-on="on">
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item
+                                    v-for="(suggestion, index) in workoutSuggestions"
+                                    :key="index"
+                                    @click="workout = suggestion"
+                                >
+                                    <v-list-item-title>{{ suggestion }}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
                 </div>
                 <div>
                     <label for="duration">Duration (minutes):</label>
