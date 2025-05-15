@@ -133,20 +133,28 @@ export default {
             this.distance = '';
         },
         async fetchWorkoutSuggestions() {
-            if (!this.isLoggedIn) return;
+            if (!this.isLoggedIn) {
+                console.log('User is not logged in. Skipping fetchWorkoutSuggestions.');
+                return;
+            }
             let userToken = localStorage.getItem('userToken');
             let username = null;
             try {
                 username = JSON.parse(userToken).username;
+                console.log('Parsed username from token:', username);
             } catch (e) {
+                console.error('Error parsing userToken:', e);
                 username = null;
             }
             try {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
+                console.log('API response for workouts:', response);
                 this.workoutSuggestions = (response.data || [])
                     .filter((w) => w.user_id === username)
                     .map((w) => w.workout);
+                console.log('Filtered workout suggestions:', this.workoutSuggestions);
             } catch (error) {
+                console.error('Error fetching workout suggestions:', error);
                 if (error.response && error.response.status === 404) {
                     alert('Workout API not found (404). Please check your backend deployment.');
                 } else {
