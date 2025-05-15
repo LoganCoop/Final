@@ -10,6 +10,9 @@
                         :items="workoutSuggestions"
                         label="Workout"
                         required
+                        :filter="(item, queryText) => item.toLowerCase().includes(queryText.toLowerCase())"
+                        :allow-new="true"
+                        @update:model-value="onWorkoutInput"
                     ></v-autocomplete>
                 </div>
                 <div>
@@ -161,6 +164,10 @@ export default {
                     alert('Error fetching workout suggestions: ' + (error.response?.data?.error || error.message));
                 }
             }
+        },
+        onWorkoutInput(newValue) {
+            // Handle new workout input value
+            this.workout = newValue;
         },
     },
     mounted() {
