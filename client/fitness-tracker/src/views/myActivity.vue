@@ -114,6 +114,9 @@ export default {
                         const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                         if (response.data && response.status === 201) {
                             this.workouts.push(response.data);
+                            if (!this.workoutSuggestions.includes(this.workout)) {
+                                this.workoutSuggestions.push(this.workout);
+                            }
                         } else {
                             alert('Workout not created. Please try again.');
                         }
