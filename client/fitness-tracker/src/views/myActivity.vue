@@ -5,7 +5,7 @@
             <form @submit.prevent="addWorkout">
                 <div>
                     <label for="workout">Workout:</label>
-                    <v-autocomplete
+                    <v-combobox
                         v-model="workout"
                         :items="workoutSuggestions"
                         label="Workout"
@@ -13,7 +13,7 @@
                         clearable
                         :filter="(item, queryText) => item.toLowerCase().includes(queryText.toLowerCase())"
                         :allow-new="true"
-                    ></v-autocomplete>
+                    ></v-combobox>
                 </div>
                 <div>
                     <label for="duration">Duration (minutes):</label>
