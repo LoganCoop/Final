@@ -12,6 +12,8 @@
                         required
                         :filter="(item, queryText) => item.toLowerCase().includes(queryText.toLowerCase())"
                         :allow-new="true"
+                        clearable
+                        placeholder="Enter or select a workout"
                         @update:model-value="onWorkoutInput"
                     ></v-autocomplete>
                 </div>
@@ -110,6 +112,8 @@ export default {
                         distance: this.distance,
                         user_id: userObj.username,
                     };
+                    console.log('Adding workout:', this.workout);
+                    console.log('Workout data being sent:', workoutData);
                     try {
                         const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                         if (response.data && response.status === 201) {
@@ -169,7 +173,7 @@ export default {
             }
         },
         onWorkoutInput(newValue) {
-            // Handle new workout input value
+
             this.workout = newValue;
         },
     },
