@@ -15,6 +15,7 @@
                         clearable
                         placeholder="Enter or select a workout"
                         @update:model-value="onWorkoutInput"
+                        @blur="onWorkoutBlur"
                         v-model:search-input="workout"
                     ></v-autocomplete>
                 </div>
@@ -176,6 +177,11 @@ export default {
         onWorkoutInput(newValue) {
 
             this.workout = newValue;
+        },
+        onWorkoutBlur() {
+            if (!this.workoutSuggestions.includes(this.workout) && this.workout.trim() !== '') {
+                this.workoutSuggestions.push(this.workout);
+            }
         },
     },
     mounted() {
