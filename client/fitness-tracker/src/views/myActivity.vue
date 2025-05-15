@@ -5,7 +5,12 @@
             <form @submit.prevent="addWorkout">
                 <div>
                     <label for="workout">Workout:</label>
-                    <input type="text" v-model="workout" id="workout" required />
+                    <v-autocomplete
+                        v-model="workout"
+                        :items="workoutSuggestions"
+                        label="Workout"
+                        required
+                    ></v-autocomplete>
                 </div>
                 <div>
                     <label for="duration">Duration (minutes):</label>
@@ -55,7 +60,8 @@ export default {
             duration: '',
             distance: '',
             workouts: [],
-            editIndex: null 
+            workoutSuggestions: [],
+            editIndex: null,
         };
     },
     computed: {
@@ -71,7 +77,7 @@ export default {
                 userObj = {};
             }
             return userObj.id || null;
-        }
+        },
     },
     methods: {
         async addWorkout() {
@@ -79,20 +85,18 @@ export default {
                 this.workouts[this.editIndex] = {
                     workout: this.workout,
                     duration: this.duration,
-                    distance: this.distance
+                    distance: this.distance,
                 };
                 this.editIndex = null;
             } else {
                 if (this.isLoggedIn) {
-                    let userToken = localStorage.getItem('userToken'); 
+                    let userToken = localStorage.getItem('userToken');
                     let userObj = {};
                     try {
                         userObj = JSON.parse(userToken);
                     } catch (e) {
                         userObj = {};
                     }
-                    console.log('userToken:', userToken);
-                    console.log('userObj:', userObj);
                     if (!userObj.username) {
                         alert('Username not found. Please log in again.');
                         return;
@@ -101,9 +105,8 @@ export default {
                         workout: this.workout,
                         duration: this.duration,
                         distance: this.distance,
-                        user_id: userObj.username
+                        user_id: userObj.username,
                     };
-                    console.log('Submitting workout:', workoutData);
                     try {
                         const response = await axios.post('https://fitness-tracker-shxf.onrender.com/api/workouts', workoutData);
                         if (response.data && response.status === 201) {
@@ -129,68 +132,32 @@ export default {
             this.duration = '';
             this.distance = '';
         },
-        editWorkout(index) {
-            const workout = this.workouts[index];
-            this.workout = workout.workout;
-            this.duration = workout.duration;
-            this.distance = workout.distance;
-            this.editIndex = index;
-        },
-        deleteWorkout(index) {
-            this.workouts.splice(index, 1);
-        },
-        async fetchWorkouts() {
+        async fetchWorkoutSuggestions() {
             if (!this.isLoggedIn) return;
             let userToken = localStorage.getItem('userToken');
-            let userId = null;
+            let username = null;
             try {
-                userId = JSON.parse(userToken).id;
+                username = JSON.parse(userToken).username;
             } catch (e) {
-                userId = null;
+                username = null;
             }
             try {
                 const response = await axios.get('https://fitness-tracker-shxf.onrender.com/api/workouts');
-                let username = null;
-                try {
-                    username = JSON.parse(userToken).username;
-                } catch (e) {
-                    username = null;
-                }
-                this.workouts = (response.data || []).filter(w => w.user_id === username);
+                this.workoutSuggestions = (response.data || [])
+                    .filter((w) => w.user_id === username)
+                    .map((w) => w.workout);
             } catch (error) {
                 if (error.response && error.response.status === 404) {
                     alert('Workout API not found (404). Please check your backend deployment.');
                 } else {
-                    alert('Error fetching workouts: ' + (error.response?.data?.error || error.message));
+                    alert('Error fetching workout suggestions: ' + (error.response?.data?.error || error.message));
                 }
-            }
-        }
-    },
-    mounted() {
-        this.$watch(
-            () => currentUser.value && currentUser.value.id,
-            (newVal) => {
-                if (newVal) {
-                    this.fetchWorkouts();
-                } else {
-                    this.workouts = [];
-                }
-            },
-            { immediate: true }
-        );
-    },
-    watch: {
-        isLoggedIn(newVal, oldVal) {
-            if (newVal) {
-                this.fetchWorkouts();
-            } else {
-                this.workouts = [];
             }
         },
-        userId(newVal, oldVal) {
-            if (newVal) this.fetchWorkouts();
-        }
-    }
+    },
+    mounted() {
+        this.fetchWorkoutSuggestions();
+    },
 };
 </script>
 
