@@ -15,6 +15,7 @@
                         clearable
                         placeholder="Enter or select a workout"
                         @update:model-value="onWorkoutInput"
+                        v-model:search-input="workout"
                     ></v-autocomplete>
                 </div>
                 <div>
